@@ -1,0 +1,1218 @@
+{
+  "2026": [
+    {
+      "date": "2026-01-01",
+      "name": "New Year's Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2026-01-14",
+      "name": "YDPB Negeri Sembilan's Birthday",
+      "type": "state",
+      "state": "Negeri Sembilan",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2026-01-17",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2026-01-17",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Negeri Sembilan",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2026-01-17",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Perlis",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2026-01-17",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2026-01-18",
+      "name": "Israk and Mikraj Holiday",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-02-01",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Johor",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-02-01",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Kuala Lumpur",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-02-01",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Negeri Sembilan",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-02-01",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Penang",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-02-01",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Perak",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-02-01",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Putrajaya",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-02-01",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Selangor",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-02-01",
+      "name": "Federal Territory Day",
+      "type": "state",
+      "state": "Kuala Lumpur",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-02-01",
+      "name": "Federal Territory Day",
+      "type": "state",
+      "state": "Labuan",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-02-01",
+      "name": "Federal Territory Day",
+      "type": "state",
+      "state": "Putrajaya",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-02-02",
+      "name": "Thaipusam Holiday",
+      "type": "state",
+      "state": "Johor",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-02-02",
+      "name": "Thaipusam Holiday",
+      "type": "state",
+      "state": "Kuala Lumpur",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-02-02",
+      "name": "Thaipusam Holiday",
+      "type": "state",
+      "state": "Negeri Sembilan",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-02-02",
+      "name": "Thaipusam Holiday",
+      "type": "state",
+      "state": "Penang",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-02-02",
+      "name": "Thaipusam Holiday",
+      "type": "state",
+      "state": "Perak",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-02-02",
+      "name": "Thaipusam Holiday",
+      "type": "state",
+      "state": "Putrajaya",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-02-02",
+      "name": "Thaipusam Holiday",
+      "type": "state",
+      "state": "Selangor",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-02-03",
+      "name": "Federal Territory Day Holiday",
+      "type": "state",
+      "state": "Kuala Lumpur",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-02-03",
+      "name": "Federal Territory Day Holiday",
+      "type": "state",
+      "state": "Labuan",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-02-03",
+      "name": "Federal Territory Day Holiday",
+      "type": "state",
+      "state": "Putrajaya",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-02-17",
+      "name": "Chinese New Year",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-02-18",
+      "name": "Chinese New Year Holiday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2026-02-19",
+      "name": "Awal Ramadan",
+      "type": "state",
+      "state": "Johor",
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2026-02-19",
+      "name": "Awal Ramadan",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2026-02-20",
+      "name": "Independence Declaration Day",
+      "type": "state",
+      "state": "Melaka",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2026-03-04",
+      "name": "Installation of Sultan Terengganu",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2026-03-07",
+      "name": "Nuzul Al-Quran",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2026-03-08",
+      "name": "Nuzul Al-Quran Holiday",
+      "type": "state",
+      "state": "Kelantan",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-03-08",
+      "name": "Nuzul Al-Quran Holiday",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-03-20",
+      "name": "Hari Raya Aidilfitri Holiday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2026-03-21",
+      "name": "Hari Raya Aidilfitri",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2026-03-22",
+      "name": "Hari Raya Aidilfitri Holiday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-03-23",
+      "name": "Sultan of Johor's Birthday",
+      "type": "state",
+      "state": "Johor",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-03-23",
+      "name": "Hari Raya Aidilfitri Holiday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-03-24",
+      "name": "Hari Raya Aidilfitri Holiday",
+      "type": "state",
+      "state": "Johor",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-03-30",
+      "name": "Sabah Governor's Birthday",
+      "type": "state",
+      "state": "Sabah",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-04-03",
+      "name": "Good Friday",
+      "type": "state",
+      "state": "Sabah",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2026-04-03",
+      "name": "Good Friday",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2026-04-26",
+      "name": "Sultan of Terengganu's Birthday",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-05-01",
+      "name": "Labour Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2026-05-03",
+      "name": "Labour Day Holiday",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-05-17",
+      "name": "Raja Perlis' Birthday",
+      "type": "state",
+      "state": "Perlis",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-05-18",
+      "name": "Raja Perlis' Birthday Holiday",
+      "type": "state",
+      "state": "Perlis",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-05-22",
+      "name": "Hari Hol Pahang",
+      "type": "state",
+      "state": "Pahang",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2026-05-26",
+      "name": "Arafat Day",
+      "type": "state",
+      "state": "Kelantan",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-05-26",
+      "name": "Arafat Day",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-05-27",
+      "name": "Hari Raya Haji",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2026-05-28",
+      "name": "Hari Raya Haji Holiday",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2026-05-28",
+      "name": "Hari Raya Haji Holiday",
+      "type": "state",
+      "state": "Kelantan",
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2026-05-28",
+      "name": "Hari Raya Haji Holiday",
+      "type": "state",
+      "state": "Perlis",
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2026-05-28",
+      "name": "Hari Raya Haji Holiday",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2026-05-30",
+      "name": "Harvest Festival",
+      "type": "state",
+      "state": "Labuan",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2026-05-30",
+      "name": "Harvest Festival",
+      "type": "state",
+      "state": "Sabah",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2026-05-31",
+      "name": "Wesak Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-05-31",
+      "name": "Harvest Festival Holiday",
+      "type": "state",
+      "state": "Labuan",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-05-31",
+      "name": "Harvest Festival Holiday",
+      "type": "state",
+      "state": "Sabah",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-06-01",
+      "name": "Hari Gawai",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-06-01",
+      "name": "Agong's Birthday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-06-02",
+      "name": "Hari Gawai Holiday",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-06-02",
+      "name": "Wesak Day Holiday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-06-03",
+      "name": "Harvest Festival Holiday",
+      "type": "state",
+      "state": "Labuan",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2026-06-03",
+      "name": "Harvest Festival Holiday",
+      "type": "state",
+      "state": "Sabah",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2026-06-03",
+      "name": "Wesak Day Holiday",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2026-06-04",
+      "name": "Hari Gawai Holiday",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Thu",
+      "note": "cuti bersama — unverified"
+    },
+    {
+      "date": "2026-06-17",
+      "name": "Awal Muharram",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2026-06-21",
+      "name": "Sultan of Kedah's Birthday",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-07-07",
+      "name": "Georgetown World Heritage City Day",
+      "type": "state",
+      "state": "Penang",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-07-11",
+      "name": "Penang Governor's Birthday",
+      "type": "state",
+      "state": "Penang",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2026-07-21",
+      "name": "Hari Hol Almarhum Sultan Iskandar",
+      "type": "state",
+      "state": "Johor",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-07-22",
+      "name": "Sarawak Day",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2026-07-31",
+      "name": "Sultan of Pahang's Birthday",
+      "type": "state",
+      "state": "Pahang",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2026-08-24",
+      "name": "Melaka Governor's Birthday",
+      "type": "state",
+      "state": "Melaka",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-08-25",
+      "name": "Prophet Muhammad's Birthday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-08-31",
+      "name": "Merdeka Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-09-16",
+      "name": "Malaysia Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2026-09-29",
+      "name": "Sultan of Kelantan's Birthday",
+      "type": "state",
+      "state": "Kelantan",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2026-09-30",
+      "name": "Sultan of Kelantan's Birthday Holiday",
+      "type": "state",
+      "state": "Kelantan",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2026-10-10",
+      "name": "Sarawak Governor's Birthday",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2026-11-06",
+      "name": "Sultan of Perak's Birthday",
+      "type": "state",
+      "state": "Perak",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2026-11-08",
+      "name": "Deepavali",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2026-11-09",
+      "name": "Deepavali Holiday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2026-12-11",
+      "name": "Sultan of Selangor's Birthday",
+      "type": "state",
+      "state": "Selangor",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2026-12-24",
+      "name": "Christmas Eve",
+      "type": "state",
+      "state": "Sabah",
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2026-12-25",
+      "name": "Christmas Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Fri"
+    }
+  ],
+  "2027": [
+    {
+      "date": "2027-01-01",
+      "name": "New Year's Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-01-06",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2027-01-06",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Negeri Sembilan",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2027-01-06",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Perlis",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2027-01-06",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2027-01-14",
+      "name": "YDPB Negeri Sembilan's Birthday",
+      "type": "state",
+      "state": "Negeri Sembilan",
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2027-01-22",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Johor",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-01-22",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-01-22",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Kuala Lumpur",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-01-22",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Negeri Sembilan",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-01-22",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Penang",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-01-22",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Perak",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-01-22",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Putrajaya",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-01-22",
+      "name": "Thaipusam",
+      "type": "state",
+      "state": "Selangor",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-01-24",
+      "name": "Thaipusam Holiday",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-02-01",
+      "name": "Federal Territory Day",
+      "type": "state",
+      "state": "Kuala Lumpur",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-02-01",
+      "name": "Federal Territory Day",
+      "type": "state",
+      "state": "Labuan",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-02-01",
+      "name": "Federal Territory Day",
+      "type": "state",
+      "state": "Putrajaya",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-02-06",
+      "name": "Chinese New Year",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2027-02-07",
+      "name": "Chinese New Year Holiday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-02-08",
+      "name": "Awal Ramadan",
+      "type": "state",
+      "state": "Johor",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-02-08",
+      "name": "Awal Ramadan",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-02-08",
+      "name": "Chinese New Year Holiday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-02-20",
+      "name": "Independence Declaration Day",
+      "type": "state",
+      "state": "Melaka",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2027-02-24",
+      "name": "Nuzul Al-Quran",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2027-03-04",
+      "name": "Installation of Sultan Terengganu",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2027-03-10",
+      "name": "Hari Raya Aidilfitri",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2027-03-11",
+      "name": "Hari Raya Aidilfitri Holiday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2027-03-23",
+      "name": "Sultan of Johor's Birthday",
+      "type": "state",
+      "state": "Johor",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2027-03-26",
+      "name": "Good Friday",
+      "type": "state",
+      "state": "Sabah",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-03-26",
+      "name": "Good Friday",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-03-30",
+      "name": "Sabah Governor's Birthday",
+      "type": "state",
+      "state": "Sabah",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2027-04-26",
+      "name": "Sultan of Terengganu's Birthday",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-05-01",
+      "name": "Labour Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2027-05-02",
+      "name": "Labour Day Holiday",
+      "type": "state",
+      "state": "Kelantan",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-05-02",
+      "name": "Labour Day Holiday",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-05-16",
+      "name": "Arafat Day",
+      "type": "state",
+      "state": "Kelantan",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-05-16",
+      "name": "Arafat Day",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-05-17",
+      "name": "Hari Raya Haji",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-05-17",
+      "name": "Raja Perlis' Birthday",
+      "type": "state",
+      "state": "Perlis",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-05-18",
+      "name": "Hari Raya Haji Holiday",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2027-05-18",
+      "name": "Hari Raya Haji Holiday",
+      "type": "state",
+      "state": "Kelantan",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2027-05-18",
+      "name": "Hari Raya Haji Holiday",
+      "type": "state",
+      "state": "Perlis",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2027-05-18",
+      "name": "Hari Raya Haji Holiday",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2027-05-20",
+      "name": "Wesak Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2027-05-22",
+      "name": "Hari Hol Pahang",
+      "type": "state",
+      "state": "Pahang",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2027-05-30",
+      "name": "Harvest Festival",
+      "type": "state",
+      "state": "Labuan",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-05-30",
+      "name": "Harvest Festival",
+      "type": "state",
+      "state": "Sabah",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-05-31",
+      "name": "Harvest Festival Holiday",
+      "type": "state",
+      "state": "Labuan",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-05-31",
+      "name": "Harvest Festival Holiday",
+      "type": "state",
+      "state": "Sabah",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-06-01",
+      "name": "Hari Gawai",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2027-06-02",
+      "name": "Hari Gawai Holiday",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2027-06-06",
+      "name": "Awal Muharram",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-06-07",
+      "name": "Agong's Birthday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-06-07",
+      "name": "Awal Muharram Holiday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-06-20",
+      "name": "Sultan of Kedah's Birthday",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-07-07",
+      "name": "Georgetown World Heritage City Day",
+      "type": "state",
+      "state": "Penang",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2027-07-10",
+      "name": "Penang Governor's Birthday",
+      "type": "state",
+      "state": "Penang",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2027-07-10",
+      "name": "Hari Hol Almarhum Sultan Iskandar",
+      "type": "state",
+      "state": "Johor",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2027-07-22",
+      "name": "Sarawak Day",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2027-07-30",
+      "name": "Sultan of Pahang's Birthday",
+      "type": "state",
+      "state": "Pahang",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-08-15",
+      "name": "Prophet Muhammad's Birthday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-08-16",
+      "name": "Prophet Muhammad's Birthday Holiday",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-08-24",
+      "name": "Melaka Governor's Birthday",
+      "type": "state",
+      "state": "Melaka",
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2027-08-31",
+      "name": "Merdeka Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Tue"
+    },
+    {
+      "date": "2027-09-16",
+      "name": "Malaysia Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2027-09-29",
+      "name": "Sultan of Kelantan's Birthday",
+      "type": "state",
+      "state": "Kelantan",
+      "day_of_week": "Wed"
+    },
+    {
+      "date": "2027-09-30",
+      "name": "Sultan of Kelantan's Birthday Holiday",
+      "type": "state",
+      "state": "Kelantan",
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2027-10-09",
+      "name": "Sarawak Governor's Birthday",
+      "type": "state",
+      "state": "Sarawak",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2027-10-28",
+      "name": "Deepavali",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Thu"
+    },
+    {
+      "date": "2027-11-05",
+      "name": "Sultan of Perak's Birthday",
+      "type": "state",
+      "state": "Perak",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-12-11",
+      "name": "Sultan of Selangor's Birthday",
+      "type": "state",
+      "state": "Selangor",
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2027-12-24",
+      "name": "Christmas Eve",
+      "type": "state",
+      "state": "Sabah",
+      "day_of_week": "Fri"
+    },
+    {
+      "date": "2027-12-25",
+      "name": "Christmas Day",
+      "type": "federal",
+      "state": null,
+      "day_of_week": "Sat"
+    },
+    {
+      "date": "2027-12-26",
+      "name": "Christmas Holiday",
+      "type": "state",
+      "state": "Kelantan",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-12-26",
+      "name": "Christmas Holiday",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-12-26",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Kedah",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-12-26",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Negeri Sembilan",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-12-26",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Perlis",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-12-26",
+      "name": "Israk and Mikraj",
+      "type": "state",
+      "state": "Terengganu",
+      "day_of_week": "Sun"
+    },
+    {
+      "date": "2027-12-27",
+      "name": "Israk and Mikraj Holiday",
+      "type": "state",
+      "state": "Negeri Sembilan",
+      "day_of_week": "Mon"
+    },
+    {
+      "date": "2027-12-27",
+      "name": "Israk and Mikraj Holiday",
+      "type": "state",
+      "state": "Perlis",
+      "day_of_week": "Mon"
+    }
+  ]
+}

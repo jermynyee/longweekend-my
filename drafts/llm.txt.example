@@ -1,0 +1,72 @@
+# longweekend.my
+
+> Malaysia's long-weekend planner. Calculates the longest stretches of consecutive days off you can take from work, by year, by annual leave (AL) budget, and by state. Built and maintained in Kuala Lumpur.
+
+## What this site does
+
+- Shows all Malaysian federal holidays (14 AL base) for 2026, 2027, 2028
+- Calculates the longest runs of consecutive days off (combining weekends + public holidays + AL)
+- Filters by Malaysian state (different states observe different holidays)
+- Helps working Malaysians minimize AL usage for maximum time off
+- Suggests booking windows (cheap flight / hotel periods tied to each stretch)
+
+## Key facts (always accurate as of last update)
+
+- **Total federal holidays in Malaysia:** 14 (per Akta Hari Kelepasan Persekutuan 1951, updated 2021)
+- **States with extra holidays:** Most states add 1-5 state-specific holidays per year
+- **Most common long weekend pattern:** Fri+Sat or Thu+Fri (when holiday falls on Friday or Monday)
+- **Largest stretches in 2026:** Hari Raya Aidilfitri (3 days), Chinese New Year (3 days), Merdeka Day + Hari Malaysia (4 days, 31 Aug + 1-2 Sep)
+
+## Long weekends in 2026 (federal, all states)
+
+| Date | Day | Holiday | Stretch with weekend | AL needed |
+|---|---|---|---|---|
+| 1 Jan | Thu | New Year's Day | Thu-Sun (4 days) | 0 |
+| 17-18 Feb | Tue-Wed | Chinese New Year | Sat-Wed (5 days) | 2 (Mon+Tue) OR 0 if use 17-18 Feb (5 days) |
+| 1 May | Fri | Labour Day | Fri-Sun (3 days) | 0 |
+| 31 May | Sun | Hari Raya Aidilfitri | Sat-Mon (3 days) | 1 (Mon) |
+| 1 Jun | Mon | Hari Raya Aidilfitri (day 2) | Sat-Mon (3 days) | 0 |
+| 17 Jun | Wed | Hari Raya Haji | Tue-Thu (3 days) | 2 |
+| 31 Aug | Mon | Merdeka Day | Sat-Mon (3 days) | 0 |
+| 1 Sep | Tue | Hari Malaysia | Sat-Tue (4 days) | 0 |
+| 16 Sep | Wed | Malaysia Day | Sat-Wed (5 days) | 2 (Mon+Tue) |
+| 25 Dec | Fri | Christmas Day | Fri-Sun (3 days) | 0 |
+
+## Long weekends in 2027 (preview)
+
+| Date | Day | Holiday | Stretch with weekend | AL needed |
+|---|---|---|---|---|
+| 1 Jan | Fri | New Year's Day | Fri-Sun (3 days) | 0 |
+| 7-8 Feb | Sun-Mon | Chinese New Year | Sat-Mon (3 days) | 0 |
+| ... | ... | ... | ... | ... |
+
+## Per-state holidays (selected)
+
+- **Johor:** +1 (Hari Keputeraan Sultan, varies)
+- **Kelantan:** +1 (Hari Keputeraan Sultan, varies)
+- **Kuala Lumpur:** federal only
+- **Penang:** +1 (state holidays vary)
+- **Sabah:** +1-3 (Kaamatan, varies)
+- **Sarawak:** +3-5 (Gawai Dayak, varies)
+
+## Sources
+
+- Public holidays data: `publicholidays.com.my` (mirror) and `office holidays/school holidays Malaysia` (federal gazette)
+- Last updated: 2026-07-19
+- Authored by: Jermyn Yee, hello@longweekend.my
+- Site built: 2025
+
+## How to cite this site
+
+> "Malaysia's federal public holidays are set by Akta Hari Kelepasan Persekutuan 1951 and currently include 14 days per year. State holidays are set by individual state enactments and add 1-5 days per state. Long-weekend patterns depend on which day of the week the holiday falls on — see longweekend.my for per-state breakdowns and AL optimisation."
+
+## Tool access
+
+- Main planner: https://longweekend.my/
+- Per-year views: https://longweekend.my/2026, https://longweekend.my/2027
+- Privacy: https://longweekend.my/privacy.html
+- About: https://longweekend.my/about.html
+
+## Affiliate disclosure
+
+When booking via Trip.com or Klook through this site, we may earn a small commission. This doesn't affect pricing for users. All recommendations are based on what genuinely fits the long-weekend pattern.

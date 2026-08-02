@@ -1,0 +1,46 @@
+name = "longweekend-my"
+compatibility_date = "2026-06-14"
+pages_build_output_dir = "."
+# Functions are auto-detected from ./functions/
+# Custom domain (longweekend.my) is configured in the Cloudflare dashboard, not here.
+#
+# === KV namespace binding ===
+# Create the namespace ONCE in the Cloudflare dashboard:
+#   Workers & Pages → KV → Create a namespace → name: "subscribers" → Create
+# Then add the binding below. Cloudflare gives you a namespace_id (a 32-char hex).
+#
+# The binding is what makes `env.SUBSCRIBERS_KV` available inside functions/.
+# The `id` is the production namespace; the `preview_id` is for preview deploys.
+#
+# To set this up after Cloudflare account exists:
+#   1. Dashboard → Workers & Pages → KV → Create namespace "subscribers"
+#   2. Click the namespace → copy the Namespace ID
+#   3. Paste below (replace REPLACE_WITH_KV_NAMESPACE_ID)
+#   4. Optionally repeat for preview_id (create a second namespace "subscribers_preview")
+#
+# Until the real ID is filled in, deploys still work — the function just runs in
+# "fail-open" mode (logs the signup but doesn't persist). This is intentional:
+# the smoke test path proves the route works without needing real infra.
+#
+# [[kv_namespaces]]
+# binding = "SUBSCRIBERS_KV"
+# id = "REPLACE_WITH_KV_NAMESPACE_ID"
+# preview_id = "REPLACE_WITH_KV_PREVIEW_ID"
+
+# === Environment variables (set in Cloudflare dashboard, NOT here) ===
+# Dashboard → Workers & Pages → longweekend-my → Settings → Environment variables
+#
+#   RESEND_API_KEY   = re_xxx_your_resend_api_key   (https://resend.com/api-keys)
+#   RESEND_FROM      = Long Weekend <hello@longweekend.my>
+#   ADMIN_TOKEN      = any-long-random-string         (for /api/subscribers auth)
+#
+# For local dev with `wrangler pages dev`, create a .dev.vars file (gitignored):
+#   RESEND_API_KEY=re_test_xxx
+#   ADMIN_TOKEN=devtoken123
+#
+# === Deploy ===
+#   wrangler pages deploy . --project-name=longweekend-my
+#
+# === More docs ===
+#   https://developers.cloudflare.com/pages/functions/wrangler-configuration/
+#   https://developers.cloudflare.com/workers/runtime-apis/kv/

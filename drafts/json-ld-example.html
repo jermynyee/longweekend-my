@@ -1,0 +1,137 @@
+<!-- Add to <head> of index.html for the 2026 view. The build.py script can inject this. -->
+<!-- Pattern: one set of JSON-LD per page (per-year). -->
+
+<!-- 1. ORGANIZATION (site-wide) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "longweekend.my",
+  "url": "https://longweekend.my",
+  "logo": "https://longweekend.my/favicon.ico",
+  "description": "Malaysia's long-weekend planner. Calculate the longest stretches of days off from work, by year and by state.",
+  "founder": {
+    "@type": "Person",
+    "name": "Jermyn Yee",
+    "email": "hello@longweekend.my"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Malaysia"
+  },
+  "knowsAbout": [
+    "Malaysian public holidays",
+    "Annual leave optimisation",
+    "Long weekend planning",
+    "Malaysia federal gazette"
+  ]
+}
+</script>
+
+<!-- 2. WEBPAGE + FAQ (for the year page) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many public holidays does Malaysia have in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Malaysia has 14 federal public holidays in 2026, set under the Holidays Act 1951. Individual states add 1-5 state-specific holidays each, so the total varies from 14 (Kuala Lumpur, Putrajaya, Labuan) to 18-19 (Sarawak, Sabah)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the longest long weekend in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The longest consecutive-days-off stretch in 2026 is the Merdeka Day + Hari Malaysia + Malaysia Day run from 29 Aug (Sat) to 17 Sep (Thu) if you use 5 days of annual leave. Without using AL, the longest natural stretch is Hari Raya Aidilfitri (Sat 31 May - Mon 1 Jun, 3 days) or Malaysia Day (Sat 13 Sep - Wed 16 Sep, 4 days with 2 AL)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate long weekends with limited annual leave?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the longweekend.my planner: set your year, your annual leave balance, and your state. The tool shows the longest stretches you can get with each AL count, sorted by days-off-per-AL-used. Most efficient: 1 AL day for a 3-day weekend, 2 AL for a 5-day stretch."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which Malaysian states have the most public holidays?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sarawak has the most with up to 5 state holidays (Hari Gawai, birthday of the Governor of Sarawak, etc), Sabah has 3-4 (Kaamatan, etc), and the federal territories (Kuala Lumpur, Putrajaya, Labuan) observe only the 14 federal holidays."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When is the best time to book flights for a Malaysian long weekend?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Book 6-8 weeks before the long weekend for best fares. For Hari Raya and Chinese New Year, fares peak in the 2 weeks before. For less popular holidays (Labour Day, Malaysia Day), 3-4 weeks is fine. Use the longweekend.my fare alert tool to track price drops."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- 3. ITEM LIST (the actual holidays as structured data) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Malaysia Federal Public Holidays 2026",
+  "description": "All 14 federal public holidays in Malaysia for 2026, gazetted under the Holidays Act 1951.",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "Event",
+        "name": "New Year's Day",
+        "startDate": "2026-01-01",
+        "endDate": "2026-01-01",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Country",
+          "name": "Malaysia"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "Event",
+        "name": "Chinese New Year",
+        "startDate": "2026-02-17",
+        "endDate": "2026-02-18",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Country",
+          "name": "Malaysia"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "Event",
+        "name": "Labour Day",
+        "startDate": "2026-05-01",
+        "endDate": "2026-05-01",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Country",
+          "name": "Malaysia"
+        }
+      }
+    },
+    ...
+  ]
+}
+</script>

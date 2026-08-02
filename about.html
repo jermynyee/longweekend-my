@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Long Weekend Optimizer Malaysia</title>
+  <meta name="description" content="About longweekend.my — how the optimizer works, where the data comes from, and why we built this.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://longweekend.my/about.html">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B4%3C/text%3E%3C/svg%3E">
+  <style>
+    /* Aligned with the planner palette — cream/teal, not dark navy/orange.
+       Socrates M2 fix: visual consistency across /about and the planner. */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #FDF6F0; --panel: #FFFFFF; --panel-2: #F5F5F4;
+      --text: #1C1917; --muted: #78716C; --accent: #0F766E;
+      --border: #E7E5E4;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem; }
+    header { padding: 1.5rem 0; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+    h1 { color: var(--accent); font-size: 1.8rem; margin-bottom: 0.5rem; }
+    h2 { color: var(--text); font-size: 1.25rem; margin: 2rem 0 0.6rem; }
+    p, li { color: var(--text); margin-bottom: 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 1rem; }
+    li { margin-bottom: 0.4rem; }
+    a { color: var(--accent); }
+    .muted { color: var(--muted); font-size: 0.9rem; }
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+    footer { text-align: center; padding: 2rem 0 1rem; color: var(--muted); font-size: 0.85rem; margin-top: 3rem; border-top: 1px solid var(--border); }
+    footer a { color: var(--accent); text-decoration: none; }
+    /* Wordmark consistency with the planner */
+    .wordmark { font-weight: 700; font-size: 1.1rem; color: var(--text); }
+    .wordmark .my { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="wordmark">longweekend<span class="my">.my</span> 🌴</div>
+      <h1 style="margin-top:1rem">About longweekend.my</h1>
+      <p class="muted">A free, no-login tool for Malaysian employees to maximise their annual leave. Built and maintained in Kuala Lumpur, Malaysia.</p>
+      <p class="muted">Last updated: 23 July 2026</p>
+    </header>
+
+    <h2>The problem</h2>
+    <p>Manually scanning 365 days against federal and state holidays to find optimal long-weekend stretches is tedious and error-prone. People waste leave on days that are already off, or miss obvious 4-dayers sitting in the calendar.</p>
+
+    <h2>What the tool does</h2>
+    <p>Pick a year, drag the AL slider, toggle state holidays. The optimiser ranks every possible long-weekend combo by efficiency and shows you exactly which dates to apply for leave. It also exports your plan to .ics (Apple Calendar, Google Calendar, Outlook) and generates a shareable short URL.</p>
+
+    <h2>How it works</h2>
+    <ol>
+      <li><strong>Build a set of non-working dates:</strong> federal public holidays + selected state holidays + weekends. Holiday data is sourced from the Government of Malaysia's official gazette (Akta Hari Kelepasan Persekutuan 1951 / Holidays Act 1951) and cross-referenced against multiple sources each year.</li>
+      <li><strong>Find maximal contiguous runs</strong> of non-working dates (federal holidays + Sat/Sun weekends; Kelantan/Terengganu use Fri+Sat; Johor switched to Sat+Sun on 1 January 2025).</li>
+      <li><strong>For each run, evaluate every possible leave extension</strong> within your AL budget.</li>
+      <li><strong>Rank by efficiency</strong> (days off per AL used), then total days off, then least leave used.</li>
+    </ol>
+
+    <h2>Data sources &amp; corrections</h2>
+    <p>Federal holidays are taken from the official Malaysian gazette. State holidays are aggregated from each state's published schedule. Replacement days (e.g. Chinese New Year Day 2) and "cuti bersama" (bridge days, sometimes declared by the PM mid-year) are tracked separately. If you spot an incorrect date, please report it via the feedback form on the main page.</p>
+
+    <h2>Limitations</h2>
+    <ul>
+      <li>The optimiser assumes you can take AL on any weekday. Some employers restrict when AL can be used (e.g. no AL during peak business weeks). Always check with HR.</li>
+      <li>Private-sector vs public-sector holiday entitlements differ under the Employment Act 1955. This tool shows all gazetted federal holidays; your employer may offer fewer or more.</li>
+      <li>"Cuti bersama" (ad-hoc PM-declared bridge days) are not always announced in advance. The planner does not predict these — we update once they're gazetted.</li>
+      <li>State applicability of federal holidays varies in edge cases (e.g. New Year's Day, Nuzul Al-Quran). The table shows per-state applicability where known; always confirm with your HR department.</li>
+    </ul>
+
+    <h2>Affiliate disclosure</h2>
+    <p>Some outbound links on this site are affiliate links to hotel and flight booking partners (Trip.com, Klook). If you book through one of those links, we may earn a small commission at <strong>no extra cost to you</strong>. Affiliate revenue funds hosting, holiday-data verification, and (eventually) email reminders for people who sign up. Recommendations are based on what genuinely fits the long-weekend pattern — never on commission rates.</p>
+
+    <h2>Contact</h2>
+    <p>Found a bug, an incorrect date, or have a feature request? Use the feedback form on the <a href="/#waitlist">main page</a>, or <a href="https://discord.com/channels/@me/turtleneckpenguin">message me on Discord</a>.</p>
+
+    <footer>
+      <p><a href="/">← Back to the calculator</a> · <a href="/privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+</body>
+</html>

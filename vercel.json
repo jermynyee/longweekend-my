@@ -1,0 +1,45 @@
+{
+  "redirects": [
+    { "source": "/2025", "destination": "/2026", "statusCode": 301 },
+    { "source": "/about", "destination": "/about.html", "statusCode": 301 },
+    { "source": "/privacy", "destination": "/privacy.html", "statusCode": 301 }
+  ],
+  "rewrites": [
+    { "source": "/2026", "destination": "/year-2026.html" },
+    { "source": "/2027", "destination": "/year-2027.html" },
+    { "source": "/2028", "destination": "/year-2028.html" },
+    { "source": "/holidays/:year", "destination": "/year-:year.html" },
+    { "source": "/from/:source", "destination": "/index.html" },
+    { "source": "/:code", "destination": "/api/r?code=:code", "has": [{ "type": "host", "value": "go.longweekend.my" }] }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)\\.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=(), payment=()" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
+  ]
+}

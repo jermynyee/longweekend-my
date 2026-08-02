@@ -1,0 +1,16 @@
+# Cloudflare-specific — Vercel doesn't run these
+functions/
+wrangler.toml
+
+# Python source — build artifact is already baked into index.html
+build.py
+optimizer.py
+
+# Tooling / docs
+deploy.sh
+DEPLOY.md
+GOAL.md
+README.md
+SETUP_AFFILIATE.md
+distribution/
+.gitignore

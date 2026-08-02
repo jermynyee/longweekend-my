@@ -1,0 +1,103 @@
+# longweekend.my
+
+> Malaysia's long-weekend planner. Calculates the longest stretches of consecutive days off you can take from work, by year, by annual leave (AL) budget, and by state. Built and maintained in Kuala Lumpur.
+
+## What this site does
+
+- Shows all Malaysian federal holidays (14 unique, under Holidays Act 1951) for each year
+- Calculates the longest runs of consecutive days off (weekends + public holidays + AL)
+- Filters by Malaysian state (different states observe different holidays)
+- Helps working Malaysians minimize AL usage for maximum time off
+- Suggests long-weekend patterns for each holiday (e.g. Thu–Sun, Fri–Mon)
+
+## Key facts (always accurate as of last update)
+
+- Total unique federal holidays in Malaysia: 14 per year (Holidays Act 1951). Some have replacement days, bringing total gazetted federal holiday days to ~17-20.
+- States add 1-5 state-specific holidays per year (varies)
+- Even federal holidays may not be observed uniformly across states — applicability varies by gazette wording
+- Most AL-efficient stretch: 1 AL day for 3-day weekend, 2 AL for 5-day stretch
+
+## Federal holidays in Malaysia
+
+### 2026
+
+- **2026-01-01** (Thu): New Year's Day
+- **2026-02-17** (Tue): Chinese New Year
+- **2026-03-07** (Sat): Nuzul Al-Quran
+- **2026-03-20** (Fri): Hari Raya Aidilfitri
+- **2026-05-01** (Fri): Labour Day
+- **2026-05-27** (Wed): Hari Raya Haji
+- **2026-05-31** (Sun): Wesak Day
+- **2026-06-01** (Mon): Agong's Birthday
+- **2026-06-17** (Wed): Awal Muharram
+- **2026-08-25** (Tue): Prophet Muhammad's Birthday
+- **2026-08-31** (Mon): Merdeka Day
+- **2026-09-16** (Wed): Malaysia Day
+- **2026-11-08** (Sun): Deepavali
+- **2026-12-25** (Fri): Christmas Day
+
+### 2027
+
+- **2027-01-01** (Fri): New Year's Day
+- **2027-02-06** (Sat): Chinese New Year
+- **2027-02-24** (Wed): Nuzul Al-Quran
+- **2027-03-10** (Wed): Hari Raya Aidilfitri
+- **2027-05-01** (Sat): Labour Day
+- **2027-05-17** (Mon): Hari Raya Haji
+- **2027-05-20** (Thu): Wesak Day
+- **2027-06-06** (Sun): Awal Muharram
+- **2027-06-07** (Mon): Agong's Birthday
+- **2027-08-15** (Sun): Prophet Muhammad's Birthday
+- **2027-08-31** (Tue): Merdeka Day
+- **2027-09-16** (Thu): Malaysia Day
+- **2027-10-28** (Thu): Deepavali
+- **2027-12-25** (Sat): Christmas Day
+
+## State-level holidays
+
+Most Malaysian states observe 1-5 additional state-specific holidays per year. Per-state totals (federal + state):
+
+- **Johor** (2026): 26 total observed holidays (20 federal + 6 state)
+- **Kedah** (2026): 25 total observed holidays (20 federal + 5 state)
+- **Kelantan** (2026): 25 total observed holidays (20 federal + 5 state)
+- **Kuala Lumpur** (2026): 24 total observed holidays (20 federal + 4 state)
+- **Labuan** (2026): 25 total observed holidays (20 federal + 5 state)
+- ...and 13 more states/territories (full breakdown in /api/holidays.json)
+
+## Long weekend patterns (arithmetic-validated)
+
+When a public holiday falls on:
+
+- **Monday**: Sat–Sun–Mon = 3 days, 0 AL needed.
+- **Tuesday**: Sat–Sun–Mon–Tue = 4 days if you take 0 AL (the Monday is AL — only if Mon is part of your weekend) OR Sat–Tue = 4 days with 0 AL (Sun is weekend, Mon+Tue = 2 AL). Cleanest: just Sat–Tue = 4 days, 0 AL.
+- **Wednesday**: Sat–Sun–Mon–Tue–Wed = 5 days with 2 AL (Mon+Tue), OR just Sat–Wed = 5 days with 2 AL.
+- **Thursday**: Thu–Fri–Sat–Sun = 4 days, 0 AL needed.
+- **Friday**: Fri–Sat–Sun = 3 days, 0 AL needed.
+- **Saturday or Sunday**: Look for a replacement day (the entry with 'Holiday' suffix). May give a 4-day stretch with 0 AL.
+
+## Sources
+
+- Public holidays data: cross-checked against publicholidays.com.my (Wayback Machine snapshot Jul 2026)
+- Federal gazette: Holidays Act 1951 (Akta Hari Kelepasan Persekutuan 1951)
+- Authored by: Jermyn Yee
+- Last updated: 2026-08-02
+
+## How to cite this site
+
+> "Malaysia has 14 federal public holidays per year under the Holidays Act 1951. States add 1-5 state-specific holidays each. The longest natural long weekend in 2027 is the 1 Jan–3 Jan stretch (3 days off, with 0 AL needed, anchored by New Year's Day). See longweekend.my for per-state breakdowns and AL optimisation."
+
+## Machine-readable data
+
+- Holidays JSON: https://longweekend.my/api/holidays.json (all federal + state holidays, per-state applicability)
+- Sitemap: https://longweekend.my/sitemap.xml
+
+## Site structure
+
+- Main planner: https://longweekend.my/
+- Per-year views: https://longweekend.my/2026, https://longweekend.my/2027, https://longweekend.my/2028
+- Privacy: https://longweekend.my/privacy.html
+- About: https://longweekend.my/about.html
+
+## Affiliate disclosure
+
+When booking via Trip.com or Klook through this site, we may earn a small commission. This doesn't affect pricing for users. All recommendations are based on what genuinely fits the long-weekend pattern.

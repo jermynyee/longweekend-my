@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Popup Draft — longweekend.my preview</title>
+  <style>
+    /* === longweekend.my style (simplified) === */
+    :root {
+      --bg: #FBF9F6;
+      --panel: #FFFFFF;
+      --text: #2C2A26;
+      --muted: #6B6660;
+      --border: #E8E4DC;
+      --accent: #2D5F3F;
+      --tint: rgba(45, 95, 63, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 1rem;
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+    h1 { font-size: 24px; margin: 1rem 0 0.5rem; }
+    h2 { font-size: 18px; margin: 1.5rem 0 0.75rem; }
+    p { font-size: 14px; color: var(--muted); margin: 0.5rem 0; }
+
+    /* === Calendar (simplified) === */
+    .calendar {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1.5rem 0;
+    }
+    .month {
+      margin-bottom: 1.5rem;
+    }
+    .month-name {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      font-size: 12px;
+    }
+    .day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--text);
+      cursor: default;
+    }
+    .day.holiday {
+      background: var(--tint);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .day.stretch {
+      background: rgba(45, 95, 63, 0.15);
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .day.stretch:hover {
+      background: var(--accent);
+      color: white;
+      transform: scale(1.05);
+    }
+    .day.empty { background: transparent; }
+
+    /* === Stretch list (clickable) === */
+    .stretch-list {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1.5rem 0;
+    }
+    .stretch {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .stretch:hover {
+      background: var(--tint);
+      transform: translateX(2px);
+    }
+    .stretch-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .stretch-info {
+      flex: 1;
+    }
+    .stretch-dates {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .stretch-meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* === Popup overlay === */
+    .lw-popup-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.4); z-index: 1000;
+      display: none; align-items: center; justify-content: center;
+      padding: 1rem; animation: lw-fade-in 0.2s ease;
+    }
+    .lw-popup-overlay.visible { display: flex; }
+
+    /* === Popup box (desktop: centered, mobile: bottom sheet) === */
+    .lw-popup {
+      background: var(--bg); border-radius: 12px; padding: 1.5rem;
+      max-width: 380px; width: 100%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      animation: lw-slide-up 0.3s ease;
+    }
+    @media (max-width: 640px) {
+      .lw-popup {
+        position: fixed; bottom: 0; left: 0; right: 0;
+        border-radius: 12px 12px 0 0; max-width: 100%;
+      }
+    }
+
+    .lw-popup h3 {
+      font-size: 16px;
+      margin: 0 0 0.5rem;
+      color: var(--text);
+    }
+    .lw-popup p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 1rem;
+    }
+    .lw-popup input[type=email] {
+      width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border);
+      border-radius: 8px; font: inherit; font-size: 14px;
+      background: white; color: var(--text); margin-bottom: 0.75rem;
+    }
+    .lw-popup input[type=email]:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--tint);
+    }
+    .lw-popup-actions {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem; margin-bottom: 0.5rem;
+    }
+    .lw-popup button[type=submit] {
+      flex: 1; padding: 0.6rem; background: var(--accent); color: white;
+      border: none; border-radius: 8px; font: inherit; font-size: 14px;
+      font-weight: 500; cursor: pointer;
+    }
+    .lw-popup button[type=submit]:hover { opacity: 0.9; }
+    .lw-popup .lw-not-now {
+      background: none; border: none; color: var(--muted); cursor: pointer;
+      font: inherit; font-size: 13px; padding: 0.6rem; text-decoration: underline;
+    }
+    .lw-popup .lw-privacy {
+      font-size: 11px; color: var(--muted); text-align: center; margin: 0.5rem 0 0;
+    }
+    .lw-popup .lw-privacy a { color: var(--muted); }
+
+    @keyframes lw-fade-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes lw-slide-up {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* === Instructions banner === */
+    .instructions {
+      background: #FFF8E1;
+      border: 1px solid #FF9800;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 13px;
+    }
+    .instructions strong { color: #E65100; }
+    .instructions button {
+      background: #FF9800; color: white; border: none; padding: 4px 10px;
+      border-radius: 4px; font-size: 12px; cursor: pointer; margin-left: 8px;
+    }
+    .instructions button:hover { background: #F57C00; }
+  </style>
+</head>
+<body>
+
+  <div class="instructions">
+    <strong>📋 DRAFT PREVIEW</strong> — This is a standalone preview of the email popup.
+    <br><br>
+    <strong>Try it:</strong> Click any stretch card below (or any day in the calendar marked with a green border) to trigger the popup after a 1.5s delay.
+    <br><br>
+    <button onclick="resetPopupState()">Reset popup state</button>
+    <button onclick="clearEmailState()">Clear email state</button>
+  </div>
+
+  <h1>longweekend.my</h1>
+  <p>Your personalized leave calendar for Malaysia. Pick your state, see your best windows, plan your trips.</p>
+
+  <h2>August 2026</h2>
+  <div class="calendar">
+    <div class="month">
+      <div class="month-name">August 2026</div>
+      <div class="days">
+        <div class="day">S</div>
+        <div class="day">M</div>
+        <div class="day">T</div>
+        <div class="day">W</div>
+        <div class="day">T</div>
+        <div class="day">F</div>
+        <div class="day">S</div>
+        <div class="day empty"></div>
+        <div class="day empty"></div>
+        <div class="day empty"></div>
+        <div class="day empty"></div>
+        <div class="day empty"></div>
+        <div class="day">1</div>
+        <div class="day">2</div>
+        <div class="day">3</div>
+        <div class="day">4</div>
+        <div class="day">5</div>
+        <div class="day">6</div>
+        <div class="day">7</div>
+        <div class="day">8</div>
+        <div class="day">9</div>
+        <div class="day">10</div>
+        <div class="day">11</div>
+        <div class="day">12</div>
+        <div class="day">13</div>
+        <div class="day">14</div>
+        <div class="day">15</div>
+        <div class="day">16</div>
+        <div class="day">17</div>
+        <div class="day">18</div>
+        <div class="day">19</div>
+        <div class="day">20</div>
+        <div class="day">21</div>
+        <div class="day">22</div>
+        <div class="day">23</div>
+        <div class="day">24</div>
+        <div class="day">25</div>
+        <div class="day">26</div>
+        <div class="day">27</div>
+        <div class="day">28</div>
+        <div class="day stretch" data-stretch="0">29</div>
+        <div class="day stretch" data-stretch="0">30</div>
+        <div class="day holiday">31</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Your best windows</h2>
+  <div class="stretch-list">
+    <div class="stretch" data-stretch="0">
+      <div class="stretch-dot"></div>
+      <div class="stretch-info">
+        <div class="stretch-dates">29 Aug - 2 Sep 2026</div>
+        <div class="stretch-meta">5 days off · 1 AL (Merdeka Day) · 1 AL</div>
+      </div>
+    </div>
+    <div class="stretch" data-stretch="1">
+      <div class="stretch-dot"></div>
+      <div class="stretch-info">
+        <div class="stretch-dates">16-18 Sep 2026</div>
+        <div class="stretch-meta">3 days off · 1 AL (Malaysia Day) · 1 AL</div>
+      </div>
+    </div>
+    <div class="stretch" data-stretch="2">
+      <div class="stretch-dot"></div>
+      <div class="stretch-info">
+        <div class="stretch-dates">7-10 Nov 2026</div>
+        <div class="stretch-meta">4 days off · 1 AL (Deepavali) · 1 AL</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 2rem; font-size: 12px; text-align: center; color: var(--muted);">
+    Made with ☕ in KL · <a href="#">About</a> · <a href="#">Privacy</a>
+  </p>
+
+  <!-- === Email capture popup === -->
+  <div class="lw-popup-overlay" id="lw-popup-overlay">
+    <div class="lw-popup" id="lw-popup">
+      <h3>Get an email when your next long weekend is coming up.</h3>
+      <p>We'll send you a heads-up before each of your best windows.</p>
+      <form id="lw-popup-form">
+        <input type="email" id="lw-popup-email" placeholder="your@email.com" required>
+        <div class="lw-popup-actions">
+          <button type="submit">Notify me</button>
+          <button type="button" class="lw-not-now" id="lw-popup-dismiss">Not now</button>
+        </div>
+        <p class="lw-privacy">We'll never spam. See our <a href="#">privacy policy</a>.</p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // === Email capture popup (minimal) ===
+    (function() {
+      const POPUP_KEY = 'lw_popup_dismissed';
+      const COOLDOWN_DAYS = 7;
+      const STRETCH_CLICK_DELAY = 1500; // 1.5s after stretch click
+      let popupShownThisSession = false;
+
+      // Check if user has dismissed recently
+      function isDismissedRecently() {
+        const dismissed = localStorage.getItem(POPUP_KEY);
+        if (!dismissed) return false;
+        const dismissedAt = parseInt(dismissed, 10);
+        const daysSince = (Date.now() - dismissedAt) / (1000 * 60 * 60 * 24);
+        return daysSince < COOLDOWN_DAYS;
+      }
+
+      // Check if user is already subscribed (simulated for preview)
+      function isAlreadySubscribed() {
+        const email = localStorage.getItem('lw_user_email');
+        return !!email; // Simulated: if email is stored, they're "subscribed"
+      }
+
+      // Show the popup
+      function showPopup() {
+        const overlay = document.getElementById('lw-popup-overlay');
+        if (overlay) {
+          overlay.classList.add('visible');
+          console.log('[Preview] Popup shown');
+        }
+      }
+
+      // Hide the popup
+      function hidePopup() {
+        const overlay = document.getElementById('lw-popup-overlay');
+        if (overlay) {
+          overlay.classList.remove('visible');
+        }
+      }
+
+      // Dismiss with cooldown
+      function dismissPopup() {
+        localStorage.setItem(POPUP_KEY, Date.now().toString());
+        hidePopup();
+        console.log('[Preview] Popup dismissed (7-day cooldown set)');
+      }
+
+      // Submit email
+      function submitEmail(email) {
+        localStorage.setItem('lw_user_email', email);
+        console.log('[Preview] Email submitted:', email);
+
+        // Show success message
+        const popup = document.getElementById('lw-popup');
+        popup.innerHTML = `
+          <h3>You're in! 🎉</h3>
+          <p>We'll email you before your next long weekend.</p>
+          <button type="button" onclick="document.getElementById('lw-popup-overlay').classList.remove('visible')"
+                  style="width:100%;padding:0.6rem;background:var(--accent);color:white;border:none;border-radius:8px;font:inherit;font-size:14px;font-weight:500;cursor:pointer;margin-top:0.5rem;">
+            Got it
+          </button>
+        `;
+
+        // Auto-close after 3 seconds
+        setTimeout(hidePopup, 3000);
+      }
+
+      // Hook into stretch card click (and calendar day click)
+      document.addEventListener('click', (e) => {
+        const stretchCard = e.target.closest('[data-stretch]');
+        if (!stretchCard) return;
+
+        // Only show once per session
+        if (popupShownThisSession) return;
+
+        // Check if dismissed recently
+        if (isDismissedRecently()) {
+          console.log('[Preview] Popup skipped: dismissed within last 7 days');
+          return;
+        }
+
+        // Check if already subscribed
+        if (isAlreadySubscribed()) {
+          console.log('[Preview] Popup skipped: already subscribed');
+          return;
+        }
+
+        // Show popup after delay
+        popupShownThisSession = true;
+        console.log('[Preview] Stretch clicked, popup will show in 1.5s...');
+        setTimeout(showPopup, STRETCH_CLICK_DELAY);
+      });
+
+      // Wire up the form
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('lw-popup-form');
+        const dismiss = document.getElementById('lw-popup-dismiss');
+        const overlay = document.getElementById('lw-popup-overlay');
+
+        if (form) {
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('lw-popup-email').value.trim();
+            if (email) submitEmail(email);
+          });
+        }
+
+        if (dismiss) {
+          dismiss.addEventListener('click', dismissPopup);
+        }
+
+        // Tap outside to dismiss
+        if (overlay) {
+          overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) dismissPopup();
+          });
+        }
+      });
+    })();
+
+    // Reset functions for preview
+    function resetPopupState() {
+      localStorage.removeItem('lw_popup_dismissed');
+      localStorage.removeItem('lw_user_email');
+      location.reload();
+    }
+    function clearEmailState() {
+      localStorage.removeItem('lw_user_email');
+      alert('Email state cleared. You can now trigger the popup again.');
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+# NOTE: This file is served by Vercel as `text/plain` (default for .txt).
+# Comments above are for the source repo only; on the live site, browsers and
+# Google's crawler see the last line as the only directive. ads.txt is the
+# IAB-simpler text format and Google accepts a single DIRECTIVE line.
+# This file is PREPARATORY ONLY — AdSense was rejected (see build.py flag
+# ADSENSE_ENABLED). The line is kept because Google AdSense policy requires
+# ads.txt to exist before/after applying, even during cooldown.
+google.com, pub-5506809170449982, DIRECT, f08c47fec0942fa0

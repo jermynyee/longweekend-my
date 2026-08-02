@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">  <!-- never index admin pages -->
+<title>Attribution Dashboard · longweekend.my</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#FDF6F0;--panel:#fff;--text:#0f172a;--muted:#64748b;
+    --accent:#0F766E;--border:#e2e8f0;--tint:#ccfbf1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+       background:var(--bg);color:var(--text);padding:1rem;line-height:1.4}
+  h1{font-size:22px;margin-bottom:0.3rem}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:1.25rem}
+  .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.75rem;margin-bottom:1.25rem}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem}
+  .k{font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);font-weight:600}
+  .v{font-size:28px;font-weight:800;margin-top:0.2rem;color:var(--accent);font-variant-numeric:tabular-nums}
+  .v small{font-size:13px;font-weight:600;color:var(--muted);margin-left:0.2rem}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.25rem}
+  @media(max-width:700px){.grid2{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem}
+  .panel h2{font-size:14px;font-weight:700;margin-bottom:0.6rem;color:var(--text)}
+  .chart-wrap{position:relative;height:260px}
+  table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+  th,td{padding:6px 8px;text-align:left;border-bottom:1px solid var(--border)}
+  th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.05em}
+  td.num{text-align:right}
+  .bar{height:6px;background:var(--tint);border-radius:3px;overflow:hidden;margin-top:2px}
+  .bar > span{display:block;height:100%;background:var(--accent)}
+  .err{background:#FEE2E2;border:1px solid #FCA5A5;color:#7F1D1D;padding:1rem;border-radius:8px;margin:1rem 0}
+  .ok-banner{background:var(--tint);border:1px solid var(--accent);color:var(--accent);padding:0.6rem 0.9rem;border-radius:8px;margin-bottom:1rem;font-size:13px}
+  .controls{display:flex;gap:0.4rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+  .controls select,.controls button{font:inherit;font-size:13px;padding:0.4rem 0.7rem;border-radius:6px;border:1px solid var(--border);background:#fff;cursor:pointer}
+  .controls button{background:var(--accent);color:#fff;border-color:var(--accent)}
+  footer{text-align:center;color:var(--muted);font-size:11px;padding:1.5rem 0 0.5rem}
+  code{background:#f1f5f9;padding:0.1rem 0.4rem;border-radius:3px;font-size:12px}
+</style>
+</head>
+<body>
+
+<h1>📊 Attribution Dashboard</h1>
+<p class="sub">longweekend.my · <span id="range-label">last 30 days</span> · generated <span id="gen-ts">—</span></p>
+
+<div id="auth-needed" style="display:none">
+  <div class="err">
+    <strong>Missing or wrong <code>?key=…</code> parameter.</strong><br>
+    Append <code>?key=YOUR_ADMIN_KEY</code> to this URL.
+    Set the same string in Vercel as the <code>ADMIN_KEY</code> env var.
+  </div>
+</div>
+<div id="db-missing" style="display:none">
+  <div class="err">
+    <strong>POSTGRES_URL is not set on the server.</strong><br>
+    Provision Neon Postgres in the Vercel Storage tab and add it as an
+    env var to the <code>longweekend-my</code> project.
+  </div>
+</div>
+<div id="content" style="display:none">
+
+  <div class="controls">
+    <label>Since:
+      <input type="date" id="since" value="2026-07-01" />
+    </label>
+    <label>Range:
+      <select id="days">
+        <option value="7">last 7 days</option>
+        <option value="30" selected>last 30 days</option>
+        <option value="90">last 90 days</option>
+        <option value="365">last year</option>
+      </select>
+    </label>
+    <button id="refresh">Refresh</button>
+    <span id="since-label" style="color:var(--muted);font-size:12px"></span>
+    <label style="display:inline-flex;align-items:center;gap:.4rem;color:var(--muted);font-size:13px;margin-left:1rem;cursor:pointer">
+      <input type="checkbox" id="exclude-my-ip" />
+      Exclude my IP
+    </label>
+  </div>
+
+  <div class="row">
+    <div class="card"><div class="k">Pageviews</div><div class="v" id="kpi-pageviews">—</div></div>
+    <div class="card"><div class="k">Unique visitors</div><div class="v" id="kpi-visitors">—</div></div>
+    <div class="card"><div class="k">Waitlist signups</div><div class="v" id="kpi-signups">—</div></div>
+    <div class="card"><div class="k">Affiliate clicks</div><div class="v" id="kpi-aff">—</div></div>
+    <div class="card"><div class="k">✈️ Trip.com clicks</div><div class="v" id="kpi-trip">—</div></div>
+    <div class="card"><div class="k">🏨 Klook clicks</div><div class="v" id="kpi-klook">—</div></div>
+    <div class="card"><div class="k">Share clicks</div><div class="v" id="kpi-share">—</div></div>
+    <div class="card"><div class="k">Tip jar clicks</div><div class="v" id="kpi-tip">—</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>👁️ Pageviews &amp; unique visitors by day</h2>
+      <div class="chart-wrap"><canvas id="chart-pageviews-day"></canvas></div>
+    </div>
+    <div class="panel">
+      <h2>📅 Signups by day</h2>
+      <div class="chart-wrap"><canvas id="chart-signups-day"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>🌐 Pageviews by source</h2>
+      <table id="tbl-pv-source"><thead><tr><th>Source</th><th class="num">Views</th></tr></thead><tbody></tbody></table>
+    </div>
+    <div class="panel">
+      <h2>🌐 Signups by UTM source</h2>
+      <table id="tbl-source"><thead><tr><th>Source</th><th class="num">Count</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>📮 Signups by email domain</h2>
+    <table id="tbl-domain"><thead><tr><th>Domain</th><th class="num">Count</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>🎯 Events by name</h2>
+      <table id="tbl-events"><thead><tr><th>Event</th><th class="num">Count</th></tr></thead><tbody></tbody></table>
+    </div>
+    <div class="panel">
+      <h2>🔗 Affiliate clicks by partner</h2>
+      <table id="tbl-partner"><thead><tr><th>Partner</th><th class="num">Count</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:1.25rem">
+    <h2>✈️ Trip.com — flight search clicks</h2>
+    <p style="color:var(--muted);font-size:13px;margin:0 0 1rem 0">Dedicated tracking for the new Trip.com flight affiliate. Click count and breakdown by destination. <a href="https://www.trip.com/t/6KgZVf4yNV2" target="_blank" rel="noopener noreferrer">trip.com</a> is the primary flight partner; Skyscanner is the unmapped-destination fallback.</p>
+    <div class="grid2">
+      <div>
+        <h3 style="font-size:14px;margin:0 0 .5rem 0;color:var(--muted);font-weight:600">Clicks by day</h3>
+        <div class="chart-wrap" style="height:180px"><canvas id="chart-trip-day"></canvas></div>
+      </div>
+      <div>
+        <h3 style="font-size:14px;margin:0 0 .5rem 0;color:var(--muted);font-weight:600">Clicks by destination</h3>
+        <table id="tbl-trip-dest"><thead><tr><th>Destination</th><th class="num">Clicks</th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+    <h3 style="font-size:14px;margin:1.25rem 0 .5rem 0;color:var(--muted);font-weight:600">Recent Trip.com clicks (last 20)</h3>
+    <table id="tbl-trip-recent"><thead><tr><th>When</th><th>Destination</th><th class="num">Days off</th><th class="num">AL used</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="panel" style="margin-bottom:1.25rem">
+    <h2>🌍 Visitor location</h2>
+    <p style="color:var(--muted);font-size:13px;margin:0 0 1rem 0">Visitor geo from Vercel's <code>x-vercel-ip-*</code> headers (free, server-side). Note: VPN users appear from the VPN exit city, not their real one. Region codes are ISO 3166-2 (e.g. <code>14</code> = Selangor, <code>10</code> = Selangor FT, <code>16</code> = WP KL).</p>
+    <div class="grid2">
+      <div>
+        <h3 style="font-size:14px;margin:0 0 .5rem 0;color:var(--muted);font-weight:600">By country</h3>
+        <table id="tbl-pv-country"><thead><tr><th>Country</th><th class="num">Pageviews</th></tr></thead><tbody></tbody></table>
+      </div>
+      <div>
+        <h3 style="font-size:14px;margin:0 0 .5rem 0;color:var(--muted);font-weight:600">By city (top 20)</h3>
+        <table id="tbl-pv-city"><thead><tr><th>Country</th><th>City</th><th class="num">Pageviews</th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+    <h3 style="font-size:14px;margin:1.25rem 0 .5rem 0;color:var(--muted);font-weight:600">By state/region (auto-decoded for MY, ID, TH, PH, VN; others show raw ISO code)</h3>
+    <table id="tbl-pv-region"><thead><tr><th>Country</th><th>Region</th><th class="num">Pageviews</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="panel" style="margin-bottom:1.25rem">
+    <h2>🗺️ Affiliate clicks by destination</h2>
+    <table id="tbl-dest"><thead><tr><th>Destination</th><th class="num">Clicks</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="panel">
+    <h2>🆕 Recent signups (last 20)</h2>
+    <table id="tbl-recent"><thead><tr><th>Email</th><th>Source</th><th>Year / AL</th><th>When</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <footer>longweekend.my · attribution dashboard · first-party data, no third-party trackers</footer>
+</div>
+
+<script>
+const params=new URLSearchParams(location.search);
+const KEY=params.get('key');
+if(!KEY){document.getElementById('auth-needed').style.display='block'}
+else{load()}
+
+let chartDay=null;
+let chartPv=null;
+
+async function load(){
+  const days=document.getElementById('days').value;
+  let since=document.getElementById('since').value;
+  // Fallback: if the input lost its value (some browsers do this for date
+  // inputs on first paint), default to the value attribute or a sane fallback.
+  if(!since){
+    since=document.getElementById('since').getAttribute('value') || '2026-07-01';
+  }
+  document.getElementById('range-label').textContent='last '+days+' days';
+  // Build URL with all params. exclude_my_ip=1 filters out events from the
+  // requester's IP (so Jer can hide his own pageview/affiliate/share tests).
+  // The toggle state is persisted in localStorage across page reloads.
+  const excludeMyIp = document.getElementById('exclude-my-ip').checked;
+  try { localStorage.setItem('lw-exclude-my-ip', excludeMyIp ? '1' : '0'); } catch (e) {}
+  let url='/api/attribution?key='+encodeURIComponent(KEY)+'&days='+days+'&since='+encodeURIComponent(since);
+  if (excludeMyIp) url += '&exclude_my_ip=1';
+  const r=await fetch(url);
+  if(r.status===503){
+    const j=await r.json().catch(()=>({}));
+    if(j.error==='db_unconfigured'){
+      document.getElementById('db-missing').style.display='block';
+      return;
+    }
+  }
+  if(r.status===401){
+    document.getElementById('auth-needed').style.display='block';
+    document.getElementById('content').style.display='none';
+    return;
+  }
+  const d=await r.json();
+  if(!d.ok){alert('Error: '+d.error);return}
+  document.getElementById('content').style.display='block';
+  document.getElementById('gen-ts').textContent=new Date(d.generated_at).toLocaleString();
+  if(d.since){
+    document.getElementById('since-label').textContent='(filtering from '+d.since+')';
+  } else {
+    document.getElementById('since-label').textContent='';
+  }
+  document.getElementById('kpi-pageviews').textContent=d.totals.pageviews||0;
+  document.getElementById('kpi-visitors').textContent=d.totals.unique_visitors||0;
+  document.getElementById('kpi-signups').textContent=d.totals.signups;
+  document.getElementById('kpi-tip').textContent=d.totals.tip_jar_clicks;
+  document.getElementById('kpi-aff').textContent=d.totals.affiliate_clicks;
+  // Trip.com KPI: count of clicks where partner='trip' from the partner table
+  const tripClicks = (d.affiliate_by_partner||[]).filter(r => r.partner === 'trip')
+                                                .reduce((s,r) => s + (r.count||0), 0);
+  document.getElementById('kpi-trip').textContent=tripClicks;
+  // Klook KPI: same pattern, partner='klook' (hotels)
+  const klookClicks = (d.affiliate_by_partner||[]).filter(r => r.partner === 'klook')
+                                                 .reduce((s,r) => s + (r.count||0), 0);
+  document.getElementById('kpi-klook').textContent=klookClicks;
+  document.getElementById('kpi-share').textContent=d.totals.share_clicks;
+  renderChartMulti('chart-pageviews-day', [
+    {rows: d.pageviews_by_day, label: 'Pageviews', color: '#3b82f6', type: 'line'},
+    {rows: d.unique_visitors_by_day, label: 'Unique visitors', color: '#10b981', type: 'line'},
+  ]);
+  renderChart('chart-signups-day', d.signups_by_day, 'Signups', '#0F766E');
+  fillTable('tbl-pv-source',d.pageviews_by_source,['source','count']);
+  fillTable('tbl-pv-country',d.pageviews_by_country,['country','count']);
+  fillTable('tbl-pv-city',d.pageviews_by_country_city,['country','city','count']);
+  fillTable('tbl-pv-region', d.pageviews_by_country_region.map(formatRegionRow),
+            ['country','region','count']);
+  fillTable('tbl-source',d.signups_by_source,['source','count']);
+  fillTable('tbl-domain',d.signups_by_domain,['domain','count']);
+  fillTable('tbl-events',d.events_by_name,['name','count']);
+  fillTable('tbl-partner',d.affiliate_by_partner,['partner','count']);
+  fillTable('tbl-dest',d.affiliate_by_destination,['dest','count']);
+  // Trip.com panel
+  renderChart('chart-trip-day', d.affiliate_by_trip_day, 'Trip.com clicks', '#2563eb');
+  fillTable('tbl-trip-dest', d.affiliate_by_trip_destination, ['dest','count']);
+  fillTripRecent(d.recent_trip_clicks);
+  fillRecent(d.recent_signups);
+}
+
+function fillTable(id,rows,cols){
+  const tb=document.querySelector('#'+id+' tbody');
+  tb.innerHTML='';
+  if(!rows||!rows.length){tb.innerHTML='<tr><td colspan="'+cols.length+'" style="color:var(--muted)">no data yet</td></tr>';return}
+  // Bar chart only on the 2nd column if it's numeric (skip for time/days columns)
+  const showBar = cols.length === 2;
+  const max = showBar ? Math.max(...rows.map(r => r[cols[1]]||0)) : 0;
+  rows.forEach(r => {
+    let html = '<tr>';
+    cols.forEach((c, i) => {
+      const v = r[c];
+      const cls = (i === cols.length - 1) ? ' class="num"' : '';
+      html += `<td${cls}>${escapeHtml(String(v == null ? '' : v))}`;
+      if (showBar && i === 1) {
+        const pct = max ? Math.round((v||0)/max*100) : 0;
+        html += `<div class="bar"><span style="width:${pct}%"></span></div>`;
+      }
+      html += '</td>';
+    });
+    html += '</tr>';
+    tb.innerHTML += html;
+  });
+}
+
+function fillRecent(rows){
+  const tb=document.querySelector('#tbl-recent tbody');
+  tb.innerHTML='';
+  if(!rows||!rows.length){tb.innerHTML='<tr><td colspan="4" style="color:var(--muted)">no signups yet — share the site to get some!</td></td></tr>';return}
+  rows.forEach(r=>{
+    tb.innerHTML+=`<tr><td><code>${escapeHtml(r.email||'')}</code></td><td>${escapeHtml(r.source||'')}</td><td>${r.year||'?'} / ${r.al||'?'} AL</td><td style="color:var(--muted)">${escapeHtml(r.ts||'')}</td></tr>`;
+  });
+}
+
+function fillTripRecent(rows){
+  const tb=document.querySelector('#tbl-trip-recent tbody');
+  tb.innerHTML='';
+  if(!rows||!rows.length){tb.innerHTML='<tr><td colspan="4" style="color:var(--muted)">no Trip.com clicks yet — share the site or post on social to drive flight-search intent</td></tr>';return}
+  rows.forEach(r=>{
+    const when = r.ts ? r.ts.replace('T',' ').slice(0,16) : '—';
+    const dest = r.dest || '—';
+    const days = r.daysOff != null ? `${r.daysOff}d` : '—';
+    const al = r.al != null ? `${r.al}d` : '—';
+    tb.innerHTML += `<tr><td style="color:var(--muted);font-family:ui-monospace,monospace;font-size:12px">${escapeHtml(when)}</td><td>${escapeHtml(dest)}</td><td class="num">${escapeHtml(days)}</td><td class="num">${escapeHtml(al)}</td></tr>`;
+  });
+}
+
+function renderChart(canvasId, rows, label, color){
+  renderChartMulti(canvasId, [{rows, label, color}]);
+}
+
+function renderChartMulti(canvasId, series){
+  const ctx=document.getElementById(canvasId);
+  if(!ctx){ return; }
+  // Union of all dates across series so missing days render as zero instead of a gap.
+  const labelSet = new Set();
+  series.forEach(s => s.rows.forEach(r => labelSet.add(r.day)));
+  const labels = Array.from(labelSet).sort();
+  const datasets = series.map(s => ({
+    label: s.label,
+    data: labels.map(day => {
+      const row = s.rows.find(r => r.day === day);
+      return row ? row.count : 0;
+    }),
+    backgroundColor: s.color,
+    borderColor: s.color,
+    borderWidth: s.type === 'line' ? 2 : 0,
+    borderRadius: s.type === 'line' ? 0 : 4,
+    tension: 0.25,
+    fill: false,
+  }));
+  // Track every chart by canvasId so re-renders don't pile up
+  if(!window._charts) window._charts = {};
+  if(window._charts[canvasId]) window._charts[canvasId].destroy();
+  const hasMultiple = series.length > 1;
+  const isLine = series[0] && series[0].type === 'line';
+  const newChart=new Chart(ctx,{
+    type: isLine ? 'line' : 'bar',
+    data:{labels,datasets},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:hasMultiple,position:'top',labels:{boxWidth:12,padding:8,font:{size:11}}},
+        tooltip:{mode:'index',intersect:false}
+      },
+      scales:{
+        y:{beginAtZero:true,ticks:{precision:0},grid:{color:'#f1f5f9'}},
+        x:{ticks:{maxRotation:0,autoSkip:true,maxTicksLimit:10},grid:{display:false}}
+      }
+    }
+  });
+  window._charts[canvasId] = newChart;
+}
+
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+// Decode ISO 3166-2 numeric region codes to state names for major ASEAN
+// countries. Vercel returns the numeric form (e.g. "14" for WP KL), not the
+// human-readable name. Source: https://en.wikipedia.org/wiki/ISO_3166-2
+const REGION_DECODE = {
+  MY: {
+    '01':'Johor','02':'Kedah','03':'Kelantan','04':'Melaka','05':'Negeri Sembilan',
+    '06':'Pahang','07':'Pulau Pinang','08':'Perak','09':'Perlis','10':'Perak',
+    '11':'Sabah','12':'Sarawak','13':'Selangor','14':'Wilayah Persekutuan KL',
+    '15':'Wilayah Persekutuan Labuan','16':'Wilayah Persekutuan Putrajaya',
+    '17':'Terengganu'
+  },
+  SG: {},  // Singapore is a city-state, no regions
+  ID: {
+    '01':'Aceh','02':'Sumatera Utara','03':'Sumatera Barat','04':'Riau',
+    '05':'Jambi','06':'Sumatera Selatan','07':'Bengkulu','08':'Lampung',
+    '09':'Kep. Bangka Belitung','10':'Kep. Riau','11':'DKI Jakarta',
+    '12':'Jawa Barat','13':'Jawa Tengah','14':'DI Yogyakarta','15':'Jawa Timur',
+    '16':'Banten','17':'Bali','18':'Nusa Tenggara Barat','19':'Nusa Tenggara Timur',
+    '20':'Kalimantan Barat','21':'Kalimantan Tengah','22':'Kalimantan Selatan',
+    '23':'Kalimantan Timur','24':'Kalimantan Utara','25':'Sulawesi Utara',
+    '26':'Sulawesi Tengah','27':'Sulawesi Selatan','28':'Sulawesi Tenggara',
+    '29':'Gorontalo','30':'Sulawesi Barat','31':'Maluku','32':'Maluku Utara',
+    '33':'Papua','34':'Papua Barat','35':'Papua Selatan','36':'Papua Tengah',
+    '37':'Papua Pegunungan','38':'Papua Barat Daya'
+  },
+  TH: {
+    '10':'Bangkok','11':'Samut Prakan','12':'Nonthaburi','13':'Pathum Thani',
+    '14':'Phra Nakhon Si Ayutthaya','15':'Ang Thong','16':'Lop Buri','17':'Sing Buri',
+    '18':'Chai Nat','19':'Saraburi','20':'Chon Buri','21':'Rayong','22':'Chanthaburi',
+    '23':'Trat','24':'Chachoengsao','25':'Prachin Buri','26':'Nakhon Nayok',
+    '27':'Sa Kaeo','30':'Nakhon Ratchasima','31':'Buri Ram','32':'Surin',
+    '33':'Si Sa Ket','34':'Ubon Ratchathani','35':'Yasothon','36':'Chaiyaphum',
+    '37':'Amnat Charoen','38':'Bueng Kan','39':'Nong Bua Lam Phu','40':'Khon Kaen',
+    '41':'Udon Thani','42':'Loei','43':'Nong Khai','44':'Maha Sarakham',
+    '45':'Roi Et','46':'Kalasin','47':'Sakon Nakhon','48':'Nakhon Phanom',
+    '49':'Mukdahan','50':'Chiang Mai','51':'Lamphun','52':'Lampang','53':'Uttaradit',
+    '54':'Phrae','55':'Nan','56':'Phayao','57':'Chiang Rai','58':'Mae Hong Son',
+    '60':'Nakhon Sawan','61':'Uthai Thani','62':'Kamphaeng Phet','63':'Tak',
+    '64':'Sukhothai','65':'Phitsanulok','66':'Phichit','67':'Phetchabun',
+    '70':'Ratchaburi','71':'Kanchanaburi','72':'Suphan Buri','73':'Nakhon Pathom',
+    '74':'Samut Sakhon','75':'Samut Songkhram','76':'Phetchaburi','77':'Prachuap Khiri Khan',
+    '80':'Nakhon Si Thammarat','81':'Krabi','82':'Phang Nga','83':'Phuket',
+    '84':'Surat Thani','85':'Ranong','86':'Chumphon','90':'Songkhla','91':'Satun',
+    '92':'Trang','93':'Phatthalung','94':'Pattani','95':'Yala','96':'Narathiwat'
+  },
+  PH: {
+    '01':'Ilocos','02':'Cagayan Valley','03':'Central Luzon','04':'CALABARZON',
+    '05':'Bicol','06':'Western Visayas','07':'Central Visayas','08':'Eastern Visayas',
+    '09':'Zamboanga Peninsula','10':'Northern Mindanao','11':'Davao','12':'SOCCSKSARGEN',
+    '13':'Caraga','14':'BARMM','15':'Cordillera','16':'NCR'
+  },
+  VN: {
+    '01':'Lai Châu','02':'Lào Cai','03':'Hà Giang','04':'Cao Bằng','05':'Sơn La',
+    '06':'Yên Bái','07':'Tuyên Quang','08':'Lạng Sơn','09':'Quảng Ninh',
+    '10':'Hà Giang (alt)','11':'Điện Biên','12':'Lai Châu (alt)','13':'Sơn La (alt)',
+    '14':'Hòa Bình','15':'Hà Nam','16':'Nam Định','17':'Ninh Bình','18':'Thanh Hóa',
+    '19':'Nghệ An','20':'Hà Tĩnh','21':'Quảng Bình','22':'Quảng Trị','23':'Thừa Thiên-Huế',
+    '24':'Đà Nẵng','25':'Quảng Nam','26':'Quảng Ngãi','27':'Bình Định','28':'Phú Yên',
+    '29':'Khánh Hòa','30':'Ninh Thuận','31':'Bình Thuận','32':'Kon Tum','33':'Gia Lai',
+    '34':'Đắk Lắk','35':'Đắk Nông','36':'Lâm Đồng','37':'Bình Phước','38':'Tây Ninh',
+    '39':'Bình Dương','40':'Đồng Nai','41':'Bà Rịa-Vũng Tàu','42':'TP. Hồ Chí Minh',
+    '43':'Long An','44':'Tiền Giang','45':'Bến Tre','46':'Trà Vinh','47':'Vĩnh Long',
+    '48':'Đồng Tháp','49':'An Giang','50':'Kiên Giang','51':'Cần Thơ','52':'Hậu Giang',
+    '53':'Sóc Trăng','54':'Bạc Liêu','55':'Cà Mau'
+  }
+};
+
+function decodeRegion(country, code) {
+  if (!code) return '';
+  if (code === '(unknown)') return '(unknown)';
+  const table = REGION_DECODE[country];
+  if (table && table[code]) return table[code];
+  return code;  // unknown numeric code, show as-is
+}
+
+function formatRegionRow(row) {
+  // Convert a (country, region, count) row to an object with the region
+  // code decoded to a human-readable name, for display in the region table.
+  return {
+    country: row.country,
+    region: decodeRegion(row.country, row.region),
+    count: row.count,
+  };
+}
+
+document.getElementById('refresh').addEventListener('click',load);
+document.getElementById('days').addEventListener('change',load);
+document.getElementById('since').addEventListener('change',load);
+document.getElementById('exclude-my-ip').addEventListener('change',load);
+// Restore toggle state from last visit
+try {
+  if (localStorage.getItem('lw-exclude-my-ip') === '1') {
+    document.getElementById('exclude-my-ip').checked = true;
+  }
+} catch (e) {}
+</script>
+</body>
+</html>

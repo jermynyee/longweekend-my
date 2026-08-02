@@ -1,0 +1,106 @@
+{
+  "version": "2026-07-19",
+  "country": "Malaysia",
+  "source": "https://longweekend.my",
+  "author": "Jermyn Yee <hello@longweekend.my>",
+  "data_source_citation": "Akta Hari Kelepasan Persekutuan 1951, mirrored at publicholidays.com.my",
+  "last_updated": "2026-07-19",
+  "federal_holidays": {
+    "2026": [
+      {"date": "2026-01-01", "name": "New Year's Day", "day_of_week": "Thursday"},
+      {"date": "2026-02-17", "name": "Chinese New Year", "day_of_week": "Tuesday"},
+      {"date": "2026-02-18", "name": "Chinese New Year", "day_of_week": "Wednesday"},
+      {"date": "2026-03-21", "name": "Hari Raya Aidilfitri (observed)", "day_of_week": "Saturday", "note": "Actual date varies; gazetted 21-22 Mar in some years"},
+      {"date": "2026-05-01", "name": "Labour Day", "day_of_week": "Friday"},
+      {"date": "2026-05-31", "name": "Hari Raya Aidilfitri", "day_of_week": "Sunday"},
+      {"date": "2026-06-01", "name": "Hari Raya Aidilfitri", "day_of_week": "Monday"},
+      {"date": "2026-06-17", "name": "Hari Raya Haji", "day_of_week": "Wednesday"},
+      {"date": "2026-08-31", "name": "Hari Merdeka", "day_of_week": "Monday"},
+      {"date": "2026-09-01", "name": "Hari Malaysia", "day_of_week": "Tuesday"},
+      {"date": "2026-09-16", "name": "Malaysia Day", "day_of_week": "Wednesday"},
+      {"date": "2026-11-08", "name": "Deepavali", "day_of_week": "Sunday", "note": "Varies; check gazette"},
+      {"date": "2026-12-25", "name": "Christmas Day", "day_of_week": "Friday"}
+    ],
+    "2027": [
+      {"date": "2027-01-01", "name": "New Year's Day", "day_of_week": "Friday"},
+      {"date": "2027-02-07", "name": "Chinese New Year", "day_of_week": "Sunday"},
+      {"date": "2027-02-08", "name": "Chinese New Year", "day_of_week": "Monday"}
+    ]
+  },
+  "long_weekends_2026": [
+    {
+      "start": "2026-01-01",
+      "end": "2026-01-04",
+      "days_off": 4,
+      "annual_leave_needed": 0,
+      "anchor_holiday": "New Year's Day",
+      "weekend_pattern": "Thu-Sun"
+    },
+    {
+      "start": "2026-02-14",
+      "end": "2026-02-18",
+      "days_off": 5,
+      "annual_leave_needed": 2,
+      "anchor_holiday": "Chinese New Year",
+      "weekend_pattern": "Sat-Wed"
+    },
+    {
+      "start": "2026-05-01",
+      "end": "2026-05-03",
+      "days_off": 3,
+      "annual_leave_needed": 0,
+      "anchor_holiday": "Labour Day",
+      "weekend_pattern": "Fri-Sun"
+    },
+    {
+      "start": "2026-05-30",
+      "end": "2026-06-01",
+      "days_off": 3,
+      "annual_leave_needed": 0,
+      "anchor_holiday": "Hari Raya Aidilfitri",
+      "weekend_pattern": "Sat-Mon"
+    },
+    {
+      "start": "2026-08-29",
+      "end": "2026-09-01",
+      "days_off": 4,
+      "annual_leave_needed": 0,
+      "anchor_holiday": "Merdeka Day + Hari Malaysia",
+      "weekend_pattern": "Sat-Tue"
+    },
+    {
+      "start": "2026-09-12",
+      "end": "2026-09-16",
+      "days_off": 5,
+      "annual_leave_needed": 2,
+      "anchor_holiday": "Malaysia Day",
+      "weekend_pattern": "Sat-Wed"
+    },
+    {
+      "start": "2026-12-25",
+      "end": "2026-12-27",
+      "days_off": 3,
+      "annual_leave_needed": 0,
+      "anchor_holiday": "Christmas Day",
+      "weekend_pattern": "Fri-Sun"
+    }
+  ],
+  "states_with_extra_holidays": {
+    "Johor": 1,
+    "Kedah": 1,
+    "Kelantan": 1,
+    "Melaka": 1,
+    "Negeri Sembilan": 1,
+    "Pahang": 1,
+    "Penang": 1,
+    "Perak": 1,
+    "Perlis": 1,
+    "Sabah": 3,
+    "Sarawak": 5,
+    "Selangor": 1,
+    "Terengganu": 1,
+    "Kuala Lumpur": 0,
+    "Putrajaya": 0,
+    "Labuan": 0
+  }
+}
