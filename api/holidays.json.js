@@ -20,7 +20,7 @@ const HOLIDAYS_PATH = join(__dirname, '..', 'holidays.json');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Cache-Control': 'public, max-age=3600',
   'Content-Type': 'application/json; charset=utf-8',
@@ -88,6 +88,19 @@ function buildResponse() {
 export default function handler(req, res) {
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Origin', '*');
+    return res.status(200).end();
+  }
+
+  // HEAD is a bodyless GET — crawlers that probe before fetching should see
+  // the same headers + 200 + Content-Length, not 405. The handler streams
+  // JSON for GET; Vercel/Node strip the body automatically for HEAD because
+  // we never call res.json() on this branch.
+  //
+  // 2026-08-15 patch: CORS pre-flight support added so HEAD-first
+  // probes (sitemap crawlers, AI ingestion bots) succeed.
+  if (req.method === 'HEAD') {
+    Object.entries(CORS_HEADERS).forEach(([k, v]) => res.setHeader(k, v));
+    res.setHeader('Content-Length', '0');
     return res.status(200).end();
   }
 
