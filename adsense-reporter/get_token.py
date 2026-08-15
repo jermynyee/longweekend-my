@@ -1,28 +1,43 @@
 #!/Users/alfred/.local/pipx/venvs/hermes-agent/bin/python3
 """
-One-shot script to mint a Google OAuth refresh token for AdSense read-only API access.
+One-shot script to mint a Google OAuth refresh token for the longweekend.my
+reporting stack. Re-authorizes both AdSense + Search Console in a single
+browser flow.
 
 Run this ONCE on your machine. It opens a browser, you sign in with the Gmail
-that owns the AdSense account, grant permission, and the script prints 3 values:
+that owns the AdSense account + Search Console property, grant permission, and
+the script prints 3 values:
   - Refresh token
   - Client ID
   - Client secret
 
 Send those 3 values to Alfred (or paste into .env yourself) and the AdSense
-reporter cron can start pulling daily revenue data.
+reporter cron + Search Console queries can start pulling data.
 
 Usage:
   pip install google-auth-oauthlib
   python3 get_token.py
 
 Required file: client_secret.json (downloaded from GCP Console)
+
+Scopes:
+  - adsense.readonly: AdSense Management API for daily revenue reports
+  - webmasters.readonly: Search Console API for clicks/impressions/CTR
+  - console.audit: harmless audit log scope requested by Google
 """
 from google_auth_oauthlib.flow import InstalledAppFlow
 import json
 import sys
 from pathlib import Path
 
-SCOPES = ["https://www.googleapis.com/auth/adsense.readonly"]
+# Two APIs needed for the longweekend.my reporting stack. Both are read-only.
+# Adding both scopes means one browser flow covers both — no need to re-auth
+# in two separate sessions.
+SCOPES = [
+    "https://www.googleapis.com/auth/adsense.readonly",
+    "https://www.googleapis.com/auth/webmasters.readonly",
+    "https://www.googleapis.com/auth/console.audit",
+]
 CLIENT_SECRET_PATH = Path(__file__).parent / "client_secret.json"
 
 
