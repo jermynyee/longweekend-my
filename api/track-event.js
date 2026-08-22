@@ -42,8 +42,9 @@ const VALID_EVENTS = new Set([
   'tip_jar_click',
   'affiliate_click',
   'share_click',
+  'share_native',
+  'ics_download',
   'stretch_expand',
-  'render',
   'nav_about',
   'nav_privacy',
   'vacation_mode_on',
@@ -52,6 +53,12 @@ const VALID_EVENTS = new Set([
   'popup_dismissed',
   'popup_signup',
   'popup_signup_error',
+  'waitlist_submit',
+  'waitlist_server_error',
+  'waitlist_fallback',
+  'calendar_add',
+  'footer_year',
+  'year_cta_click',
 ]);
 
 function jsonResponse(body, status = 200) {

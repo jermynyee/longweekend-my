@@ -610,7 +610,8 @@ function getAttribution(){
 // Attribution is auto-merged into every event's `data` so the dashboard can
 // answer "which channel drove this share_click / tip_jar_click / etc."
 const TRACK_DB_ENDPOINT='/api/track-event';
-const TRACK_DB_EVENTS=new Set(['pageview','tip_jar_click','affiliate_click','share_click','share_native','ics_download','stretch_expand','nav_about','nav_privacy','vacation_mode_on','vacation_mode_off','popup_shown','popup_dismissed','popup_signup','popup_signup_error']);
+const TRACK_DB_EVENTS=new Set(['pageview','tip_jar_click','affiliate_click','share_click','share_native','ics_download','stretch_expand','nav_about','nav_privacy','vacation_mode_on','vacation_mode_off','popup_shown','popup_dismissed','popup_signup','popup_signup_error','waitlist_submit','waitlist_server_error','waitlist_fallback','calendar_add','footer_year','year_cta_click']);
+// Excluded by design: 'render' (render telemetry — too high volume, low value, see comment above)
 function track(name, data) {
   try {
     const payload={...(data||{}),...getAttribution()};
@@ -1880,7 +1881,9 @@ if(wForm){
       backendState='network_error';
       track('waitlist_fallback',{hasFeedback:!!feedback,error:err.message});
       const fallback=document.createElement('a');
-      fallback.href=mailtoHref;
+      fallback.href=fallbackHref;
+      fallback.target='_blank';
+      fallback.rel='noopener noreferrer';
       fallback.style.display='none';
       document.body.appendChild(fallback);
       fallback.click();
@@ -1902,7 +1905,7 @@ if(wForm){
       // about the Discord DM fallback and DO NOT set the localStorage flag
       // — the form is gone from view, but if the user clears localStorage
       // they can retry.
-      p.innerHTML='Your browser should have opened a Discord DM with your signup info pre-filled — hit send to complete the signup. (If nothing happened, <a href="'+WAITLIST_FALLBACK_URL+'">message me on Discord</a>.)';
+      p.innerHTML='Discord didn\'t open automatically. Reach out at the link below and I\'ll add you manually: <a href="'+WAITLIST_FALLBACK_URL+'">message me on Discord</a>.';
     }
   });
 }
