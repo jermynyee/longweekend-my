@@ -235,8 +235,8 @@ def build_jsonld_org():
         "logo": logo_svg,
         "description": "Malaysia's long-weekend planner. Calculates the longest stretches of consecutive days off, by year, by AL budget, and by state.",
         "founder": {
-            "@type": "Person",
-            "name": "Jermyn Yee",
+            "@type": "Organization",
+            "name": "longweekend.my",
         },
         "areaServed": {"@type": "Country", "name": "Malaysia"},
         "knowsAbout": [

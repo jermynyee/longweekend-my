@@ -79,7 +79,7 @@ When a public holiday falls on:
 
 - Public holidays data: cross-checked against publicholidays.com.my (Wayback Machine snapshot Jul 2026)
 - Federal gazette: Holidays Act 1951 (Akta Hari Kelepasan Persekutuan 1951)
-- Authored by: Jermyn Yee
+- Authored by: longweekend.my team
 - Last updated: 2026-08-22
 
 ## How to cite this site

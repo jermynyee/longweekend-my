@@ -224,7 +224,7 @@ def build_llm_txt():
     parts.append("")
     parts.append("- Public holidays data: cross-checked against publicholidays.com.my (Wayback Machine snapshot Jul 2026)")
     parts.append("- Federal gazette: Holidays Act 1951 (Akta Hari Kelepasan Persekutuan 1951)")
-    parts.append("- Authored by: Jermyn Yee")
+    parts.append("- Authored by: longweekend.my team")
     parts.append(f"- Last updated: {TODAY}")
     parts.append("")
 
