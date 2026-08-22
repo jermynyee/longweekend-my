@@ -2374,6 +2374,15 @@ render();
       setTimeout(()=>showPopup('save_calendar'),ACTION_DELAY);
       return;
     }
+    const stretchBtn=e.target.closest('.stretch-header');
+    if(stretchBtn){
+      if(popupShownThisSession)return;
+      if(isDismissedRecently())return;
+      if(await isAlreadySubscribed())return;
+      popupShownThisSession=true;
+      setTimeout(()=>showPopup('stretch_expand'),ACTION_DELAY);
+      return;
+    }
   });
 
   document.addEventListener('DOMContentLoaded',()=>{
