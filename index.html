@@ -2019,30 +2019,37 @@ render();
     }
   }
 
+  // DIAGNOSTIC: gate-return logging (lane:popup-debug, 23 Aug 26).
+  // Goal: figure out why 187 stretch_expand events -> 2 popup_shown over 30d.
+  // Every early-return now logs which gate blocked. View in Vercel runtime logs
+  // or browser DevTools console. Remove after 48h of data lands.
+  function _gateLog(reason,source){
+    try{console.log('[lw-popup-gate]',{reason,source,ts:Date.now(),session:popupShownThisSession,dismissed:isDismissedRecently()});}catch(e){}
+  }
   document.addEventListener('click',async(e)=>{
     const shareBtn=e.target.closest('[data-share-stretch]');
     if(shareBtn){
-      if(popupShownThisSession)return;
-      if(isDismissedRecently())return;
-      if(await isAlreadySubscribed())return;
+      if(popupShownThisSession){_gateLog('session','share');return;}
+      if(isDismissedRecently()){_gateLog('cooldown','share');return;}
+      if(await isAlreadySubscribed()){_gateLog('subscribed','share');return;}
       popupShownThisSession=true;
       setTimeout(()=>showPopup('share'),ACTION_DELAY);
       return;
     }
     const icsBtn=e.target.closest('[data-ics-stretch]');
     if(icsBtn){
-      if(popupShownThisSession)return;
-      if(isDismissedRecently())return;
-      if(await isAlreadySubscribed())return;
+      if(popupShownThisSession){_gateLog('session','ics');return;}
+      if(isDismissedRecently()){_gateLog('cooldown','ics');return;}
+      if(await isAlreadySubscribed()){_gateLog('subscribed','ics');return;}
       popupShownThisSession=true;
       setTimeout(()=>showPopup('save_calendar'),ACTION_DELAY);
       return;
     }
     const stretchBtn=e.target.closest('.stretch-header');
     if(stretchBtn){
-      if(popupShownThisSession)return;
-      if(isDismissedRecently())return;
-      if(await isAlreadySubscribed())return;
+      if(popupShownThisSession){_gateLog('session','stretch');return;}
+      if(isDismissedRecently()){_gateLog('cooldown','stretch');return;}
+      if(await isAlreadySubscribed()){_gateLog('subscribed','stretch');return;}
       popupShownThisSession=true;
       setTimeout(()=>showPopup('stretch_expand'),ACTION_DELAY);
       return;
