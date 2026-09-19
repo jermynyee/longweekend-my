@@ -20,7 +20,12 @@
  *     "events_by_source":      [{ "source": "threads", "count": 5 }, ...],
  *     "affiliate_by_partner":  [{ "partner": "booking", "count": 5 }, ...],
  *     "affiliate_by_destination": [{ "dest": "Penang", "count": 3 }, ...],
- *     "recent_signups":        [{ "email": "j***@gmail.com", "ts": "...", "source": "twitter" }, ...]
+ *     "recent_signups":        [{ "email": "j***@gmail.com", "ts": "...", "source": "twitter" }, ...],
+ *     "pageviews_by_day":      [{ "day": "2026-06-20", "count": 25 }, ...],
+ *     "unique_visitors_by_day":[{ "day": "2026-06-20", "count": 18 }, ...],
+ *     "pageviews_by_day_and_source":      [{ "day": "2026-06-20", "source": "threads", "count": 8 }, ...],
+ *     "unique_visitors_by_day_and_source":[{ "day": "2026-06-20", "source": "threads", "count": 6 }, ...],
+ *     "pageviews_by_source":   [{ "source": "threads", "count": 80 }, ...]
  *   }
  *
  * If POSTGRES_URL is not set, returns 503 with db_unconfigured.
@@ -75,8 +80,19 @@ export async function GET(request) {
   }
 
   const url = new URL(request.url);
-  const key = url.searchParams.get('key');
-  if (!safeEq(key || '', adminKey)) {
+  // SECURITY (25 Aug 26, ox-alpha review): admin key in `?key=` leaked into
+  // Vercel request logs + browser history + Referer headers. Prefer the
+  // x-admin-key header (the local dashboard is the only consumer — easy to
+  // update). Fall back to ?key= for backwards compat so the local dashboard
+  // continues to work until Jer updates admin/attribution.html.
+  const adminKeyHeader = request.headers.get('x-admin-key') || '';
+  const adminKeyQuery = url.searchParams.get('key') || '';
+  if (adminKeyQuery) {
+    // eslint-disable-next-line no-console
+    console.warn('[attribution] ?key= query-string auth is deprecated; switch admin/attribution.html to header x-admin-key');
+  }
+  const providedKey = adminKeyHeader || adminKeyQuery;
+  if (!safeEq(providedKey, adminKey)) {
     return jsonResponse({ ok: false, error: 'unauthorized' }, 401);
   }
 
@@ -169,6 +185,8 @@ export async function GET(request) {
       recentSignups,
       pageviewsByDay,
       uniqueVisitorsByDay,
+      pageviewsByDayAndSource,
+      uniqueVisitorsByDayAndSource,
       pageviewsBySource,
       pageviewsByCountry,
       pageviewsByCountryCity,
@@ -324,6 +342,82 @@ export async function GET(request) {
         GROUP BY 1
         ORDER BY 1
       `,
+      // Pageviews by day AND grouped source (time series × channel matrix).
+      // Required to disambiguate which channel drove a multi-day spike —
+      // e.g. "was the Sep 1-4 burst Threads or WhatsApp-direct?" Without
+      // this, every spike attribution is a guess. Rows: [{day, source, count}].
+      // Source grouping mirrors pageviewsBySource exactly so buckets line up.
+      sql()`
+        SELECT
+          to_char(date_trunc('day', created_at), 'YYYY-MM-DD') AS day,
+          CASE
+            WHEN utm_source = 'reddit'  THEN 'reddit'
+            WHEN ref_host LIKE '%reddit.com%'  THEN 'reddit'
+            WHEN utm_source = 'threads' THEN 'threads'
+            WHEN ref_host LIKE '%threads.net%' OR ref_host LIKE '%threads.com%' THEN 'threads'
+            WHEN utm_source IN ('instagram','ig')  THEN 'instagram'
+            WHEN ref_host LIKE '%instagram.com%' OR ref_host LIKE '%cdninstagram.com%' THEN 'instagram'
+            WHEN utm_source IN ('twitter','x') THEN 'twitter / x'
+            WHEN ref_host IN ('twitter.com','x.com','t.co','mobile.twitter.com','m.twitter.com') THEN 'twitter / x'
+            WHEN utm_source = 'facebook' OR utm_source = 'fb' THEN 'facebook'
+            WHEN ref_host IN ('facebook.com','m.facebook.com','l.facebook.com','lm.facebook.com') THEN 'facebook'
+            WHEN utm_source = 'tiktok' THEN 'tiktok'
+            WHEN ref_host LIKE '%tiktok.com%' THEN 'tiktok'
+            WHEN utm_source = 'linkedin' THEN 'linkedin'
+            WHEN ref_host IN ('linkedin.com','lnkd.in') THEN 'linkedin'
+            WHEN utm_source = 'whatsapp' OR ref_host LIKE '%whatsapp.com%' OR ref_host = 'wa.me' THEN 'whatsapp'
+            WHEN utm_source = 'telegram' OR ref_host IN ('t.me','telegram.me','telegram.org') THEN 'telegram'
+            WHEN ref_host LIKE '%google.%' OR ref_host = 'google.com' THEN 'google'
+            WHEN ref_host LIKE '%bing.com%' OR ref_host LIKE '%duckduckgo.com%' OR ref_host LIKE '%yahoo.com%' THEN 'search (other)'
+            WHEN utm_source IS NOT NULL AND utm_source != '' THEN utm_source
+            ELSE '(direct)'
+          END AS source,
+          count(*)::int AS count
+        FROM events
+        WHERE name = 'pageview' AND created_at >= ${sinceDays}
+          AND utm_source IS DISTINCT FROM 'geo-test'
+          AND (cardinality(${excludedHashes}::text[]) = 0 OR ip_hash <> ALL(${excludedHashes}))
+        GROUP BY 1, 2
+        ORDER BY 1, count DESC
+      `,
+      // Unique visitors by day AND grouped source. Same matrix, deduplicated
+      // per (day, ip_hash, source) so a visitor who hits the site twice from
+      // the same source on the same day counts once. Pairs with the above to
+      // spot source-specific bot traffic (pv/uv ratio spikes per channel).
+      sql()`
+        SELECT
+          to_char(date_trunc('day', created_at), 'YYYY-MM-DD') AS day,
+          CASE
+            WHEN utm_source = 'reddit'  THEN 'reddit'
+            WHEN ref_host LIKE '%reddit.com%'  THEN 'reddit'
+            WHEN utm_source = 'threads' THEN 'threads'
+            WHEN ref_host LIKE '%threads.net%' OR ref_host LIKE '%threads.com%' THEN 'threads'
+            WHEN utm_source IN ('instagram','ig')  THEN 'instagram'
+            WHEN ref_host LIKE '%instagram.com%' OR ref_host LIKE '%cdninstagram.com%' THEN 'instagram'
+            WHEN utm_source IN ('twitter','x') THEN 'twitter / x'
+            WHEN ref_host IN ('twitter.com','x.com','t.co','mobile.twitter.com','m.twitter.com') THEN 'twitter / x'
+            WHEN utm_source = 'facebook' OR utm_source = 'fb' THEN 'facebook'
+            WHEN ref_host IN ('facebook.com','m.facebook.com','l.facebook.com','lm.facebook.com') THEN 'facebook'
+            WHEN utm_source = 'tiktok' THEN 'tiktok'
+            WHEN ref_host LIKE '%tiktok.com%' THEN 'tiktok'
+            WHEN utm_source = 'linkedin' THEN 'linkedin'
+            WHEN ref_host IN ('linkedin.com','lnkd.in') THEN 'linkedin'
+            WHEN utm_source = 'whatsapp' OR ref_host LIKE '%whatsapp.com%' OR ref_host = 'wa.me' THEN 'whatsapp'
+            WHEN utm_source = 'telegram' OR ref_host IN ('t.me','telegram.me','telegram.org') THEN 'telegram'
+            WHEN ref_host LIKE '%google.%' OR ref_host = 'google.com' THEN 'google'
+            WHEN ref_host LIKE '%bing.com%' OR ref_host LIKE '%duckduckgo.com%' OR ref_host LIKE '%yahoo.com%' THEN 'search (other)'
+            WHEN utm_source IS NOT NULL AND utm_source != '' THEN utm_source
+            ELSE '(direct)'
+          END AS source,
+          count(DISTINCT (date_trunc('day', created_at), ip_hash))::int AS count
+        FROM events
+        WHERE name = 'pageview' AND created_at >= ${sinceDays}
+          AND ip_hash IS NOT NULL
+          AND utm_source IS DISTINCT FROM 'geo-test'
+          AND (cardinality(${excludedHashes}::text[]) = 0 OR ip_hash <> ALL(${excludedHashes}))
+        GROUP BY 1, 2
+        ORDER BY 1, count DESC
+      `,
       // Pageviews by grouped source. The grouping normalizes both UTM
       // sources (e.g. utm_source='reddit') and referer hostnames
       // (e.g. 'www.reddit.com', 'com.reddit.frontpage', 'old.reddit.com')
@@ -437,6 +531,8 @@ export async function GET(request) {
       affiliate_by_destination: affiliateByDest,
       pageviews_by_day: pageviewsByDay,
       unique_visitors_by_day: uniqueVisitorsByDay,
+      pageviews_by_day_and_source: pageviewsByDayAndSource,
+      unique_visitors_by_day_and_source: uniqueVisitorsByDayAndSource,
       pageviews_by_source: pageviewsBySource,
       pageviews_by_country: pageviewsByCountry,
       pageviews_by_country_city: pageviewsByCountryCity,
