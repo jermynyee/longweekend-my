@@ -460,20 +460,22 @@ const AFFILIATE={
     }},
   tripHotel:{enabled:true,label:'🏨 Trip.com',type:'hotel',
     // Hotels partner (added 9 Oct 26 — Jer: "double down on Trip.com").
-    // Mirrors the platform short link https://www.trip.com/t/N6Kyg5vCgW2, which
-    // expands to /hotels?Allianceid=9065442&SID=322866832&trip_sub1=hotel
-    //   &trip_sub3=D20155256&linkhub_token=sl_N6Kyg5vCgW2
-    // The short link STRIPS extra params, so we deep-link directly instead —
-    // trip.com preserves city/checkin/checkout — to pre-fill the destination
-    // AND the stretch window (same conversion trick as the flight CTA).
+    // 9 Oct 26 (v2, per Jer): "let's not suggest a destination. But let's make
+    // sure the dates are aligned based on the date range they pick." So we
+    // pre-fill ONLY the stretch window and leave the city to the user.
+    //
+    // Verified live in a CLEAN browser session, 9 Oct 26:
+    //   /hotels?city=<NAME>&checkin&checkout   → IGNORES everything (empty
+    //       "Where to?", today's dates). This was the original broken shape —
+    //       an HTTP-200 check hides it; only the rendered page reveals it.
+    //   /hotels/list?checkin&checkout  (NO city) → dates pre-filled ✓ city blank ✓
+    //   /hotels/list?city=<NUMERIC_ID>&… → also pre-fills, but needs Trip.com's
+    //       numeric city id (names never work) — unused now that we don't
+    //       suggest a destination.
+    // Bare /hotels/list with no params is the safe fallback.
     url:(d,startIso,endIso)=>{
-      // Skip the generic 'Malaysia' fallback (destForStretch's no-match value):
-      // city=Malaysia yields a useless country-level search.
-      const raw=String(d||'').replace(/,\s*Malaysia\s*$/i,'').trim();
-      const city=/^malaysia$/i.test(raw)?'':raw;
-      let u=`https://www.trip.com/hotels?Allianceid=9065442&SID=322866832`
+      let u=`https://www.trip.com/hotels/list?Allianceid=9065442&SID=322866832`
            + `&trip_sub1=hotel&trip_sub3=D20155256&linkhub_token=sl_N6Kyg5vCgW2`;
-      if(city)u+=`&city=${encodeURIComponent(city)}`;
       if(startIso)u+=`&checkin=${encodeURIComponent(startIso)}`;
       if(endIso)u+=`&checkout=${encodeURIComponent(endIso)}`;
       return u;
