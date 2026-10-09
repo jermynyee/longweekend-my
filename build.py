@@ -759,41 +759,25 @@ const AFFILIATE={
   skyscanner:{enabled:false,aid:'',label:'✈️ Skyscanner',type:'flight',
     url:d=>{let u=`https://www.skyscanner.com/transport/flights/anywhere/?query=${encodeURIComponent(d)}`;if(AFFILIATE.skyscanner.enabled&&AFFILIATE.skyscanner.aid)u+=`&associateid=${encodeURIComponent(AFFILIATE.skyscanner.aid)}`;return u}},
   trip:{enabled:true,label:'✈️ Trip.com',type:'flight',
-    // Trip.com deep-link format (verified by expanding https://www.trip.com/t/6KgZVf4yNV2):
-    //   /flights/Kuala%20Lumpur-to-Bangkok/tickets-KUL-BKK
-    //     ?flighttype=S              (one-way = S, round-trip = R)
-    //     &dcity=KUL                 (origin — left blank, user fills in)
-    //     &acity=BKK                 (destination — left blank, user fills in)
-    //     &ddate=YYYY-MM-DD          (departure — pre-filled from stretch start)
-    //     &rdate=YYYY-MM-DD          (return — pre-filled from stretch end)
-    //     &Allianceid=9065442
-    //     &SID=322866832
-    //     &trip_sub1=                (empty by default)
-    //     &trip_sub3=D18452667
-    // Design: per user request, origin and destination are LEFT BLANK on
-    // Trip.com's side so the user picks their own airports. The stretch
-    // dates are pre-filled so the user lands on Trip.com with the right
-    // window already selected. This works because Trip.com's flight search
-    // page accepts ddate/rdate without requiring dcity/acity to be set.
+    // Flights CTA — plain Round-trip link. Jer chose option (b), 9 Oct 26:
+    // "let's not suggest a destination" + no date pre-fill on flights.
     //
-    // Signature: url(dest, startIso, endIso) — dest/holiday info is no
-    // longer used (was only for the IATA mapping), but we keep dest as a
-    // param so the call site doesn't need to change. Skyscanner fallback
-    // still uses dest for its "anywhere" search.
-    url:(d, startIso, endIso)=>{
-      const ddate=startIso||'';
-      const rdate=endIso||'';
-      // Pre-fill destination airport from dest string. nameToIata() does fuzzy
-      // fallback on city name; returns null for unknown → acity stays blank →
-      // Trip.com falls back to its own destination picker (safe degradation).
-      const iata=nameToIata(d);
-      const acity=iata?iata[0]:'';
-      return `https://www.trip.com/flights/`
-           + `?flighttype=R&ddate=${encodeURIComponent(ddate)}&rdate=${encodeURIComponent(rdate)}`
-           + `&acity=${encodeURIComponent(acity)}`
-           + `&Allianceid=9065442&SID=322866832&trip_sub1=flights&trip_sub3=D18452667`
-           + `&linkhub_token=sl_rW5KctwCgW2`;
-    }},
+    // Why flights can't be date-aligned: Trip.com's flight form refuses to hold
+    // dates unless a full route (dcity + acity) is present. Verified in CLEAN
+    // browser sessions, 9 Oct 26:
+    //   no cities                          → dates revert to today+2
+    //   acity only                         → departure honoured, return +2
+    //   dcity + acity                      → both dates honoured (only combo)
+    //   (also hunted the return param: rdate / ddate2 / returnDate / rdate1 /
+    //    endDate / inDate / d2 → ALL ignored; it's a route requirement, not a
+    //    param-name issue)
+    // Since we deliberately don't suggest a destination, we ship a plain
+    // Round-trip link and let the user fill in the route themselves.
+    url:(d,startIso,endIso)=>
+      `https://www.trip.com/flights/?flighttype=R`
+      + `&Allianceid=9065442&SID=322866832&trip_sub1=flights&trip_sub3=D18452667`
+      + `&linkhub_token=sl_rW5KctwCgW2`,
+  },
   tripHotel:{enabled:true,label:'🏨 Trip.com',type:'hotel',
     // Hotels partner (added 9 Oct 26 — Jer: "double down on Trip.com").
     // 9 Oct 26 (v2, per Jer): "let's not suggest a destination. But let's make
