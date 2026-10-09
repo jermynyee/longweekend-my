@@ -11,6 +11,13 @@
 <!-- AdSense head disabled (ADSENSE_ENABLED=False) -->
 <link rel="canonical" href="https://longweekend.my/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B4%3C/text%3E%3C/svg%3E">
+<!-- Open Graph + Twitter (25 Aug 26, ox-alpha review) -->
+<meta property="og:image" content="https://longweekend.my/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Long Weekend Planner Malaysia — visual: wordmark over 14 AL days producing X days off">
+<meta name="twitter:image" content="https://longweekend.my/og-image.svg">
+<meta name="twitter:image:alt" content="Long Weekend Planner Malaysia">
 <meta property="og:title" content="Long Weekend Planner Malaysia 2026 / 2027">
 <meta property="og:description" content="Turn your AL days into the most days off. Interactive planner with calendar export.">
 <meta property="og:type" content="website">
@@ -230,6 +237,16 @@ footer p{margin-bottom:0.25rem}
 <div class="container">
   <div class="wordmark">longweekend<span class="my">.my</span><span class="wordmark-icon" aria-hidden="true">🌴</span></div>
 
+  <!-- H1 (25 Aug 26, ox-alpha review): was missing — Google uses first H1
+       as primary page-topic signal. Keyword-aligned for "long weekend planner
+       Malaysia" — keep in sync with <title> at line 412. -->
+  <h1 class="lw-h1" style="font-size:1.4rem;font-weight:600;color:var(--text);margin:0.4rem 0 0.2rem;line-height:1.3">
+    Plan Malaysia's longest weekends in 2026 &amp; 2027
+  </h1>
+  <p class="lw-tagline" style="font-size:0.9rem;color:var(--muted);margin:0 0 1rem">
+    Tell us your annual leave — we solve the optimal year of long weekends and export to your calendar.
+  </p>
+
   <section class="configurator" id="configurator">
     <div class="cfg-group">
       <label>Year</label>
@@ -438,7 +455,25 @@ const AFFILIATE={
       return `https://www.trip.com/flights/`
            + `?flighttype=R&ddate=${encodeURIComponent(ddate)}&rdate=${encodeURIComponent(rdate)}`
            + `&acity=${encodeURIComponent(acity)}`
-           + `&Allianceid=9065442&SID=322866832&trip_sub1=&trip_sub3=D18452667`;
+           + `&Allianceid=9065442&SID=322866832&trip_sub1=flights&trip_sub3=D18452667`
+           + `&linkhub_token=sl_rW5KctwCgW2`;
+    }},
+  tripHotel:{enabled:true,label:'🏨 Trip.com',type:'hotel',
+    // Hotels partner (added 9 Oct 26 — Jer: "double down on Trip.com").
+    // Mirrors the platform short link https://www.trip.com/t/N6Kyg5vCgW2, which
+    // expands to /hotels?Allianceid=9065442&SID=322866832&trip_sub1=hotel
+    //   &trip_sub3=D20155256&linkhub_token=sl_N6Kyg5vCgW2
+    // The short link STRIPS extra params, so we deep-link directly instead —
+    // trip.com preserves city/checkin/checkout — to pre-fill the destination
+    // AND the stretch window (same conversion trick as the flight CTA).
+    url:(d,startIso,endIso)=>{
+      const city=String(d||'').replace(/,\s*Malaysia\s*$/i,'').trim();
+      let u=`https://www.trip.com/hotels?Allianceid=9065442&SID=322866832`
+           + `&trip_sub1=hotel&trip_sub3=D20155256&linkhub_token=sl_N6Kyg5vCgW2`;
+      if(city)u+=`&city=${encodeURIComponent(city)}`;
+      if(startIso)u+=`&checkin=${encodeURIComponent(startIso)}`;
+      if(endIso)u+=`&checkout=${encodeURIComponent(endIso)}`;
+      return u;
     }},
 };
 
@@ -1564,14 +1599,19 @@ function renderStretches(plan){
     const open=state.selStretch===i?'open':'';
     // Affiliate CTA: pick destination, build URL. Works as plain search even
     // when affiliate IDs are blank (just no commission tracked).
-    // Hotel partner priority: booking → agoda → klook. Picks whichever is
-    // enabled; falls back to plain Booking.com search if none.
     const dest=destForStretch(s);
-    const hotelPartner=AFFILIATE.booking.enabled?AFFILIATE.booking
+    // Hotel partner priority: trip.com (Jer, 9 Oct 26: "double down on Trip.com")
+    // → booking → agoda → klook. Klook kept as a fallback, not primary.
+    const hotelPartner=AFFILIATE.tripHotel.enabled?AFFILIATE.tripHotel
+      :AFFILIATE.booking.enabled?AFFILIATE.booking
       :AFFILIATE.agoda.enabled?AFFILIATE.agoda
       :AFFILIATE.klook.enabled?AFFILIATE.klook
       :AFFILIATE.booking;
-    const hotelUrl=dest?hotelPartner.url(dest):'#';
+    // Distinct analytics keys so hotel vs flight clicks are separable.
+    const afKey=p=>p===AFFILIATE.tripHotel?'trip_hotel':p===AFFILIATE.trip?'trip'
+      :p===AFFILIATE.klook?'klook':p===AFFILIATE.agoda?'agoda'
+      :p===AFFILIATE.booking?'booking':'other';
+    const hotelUrl=dest?hotelPartner.url(dest, s.start, s.end):'#';
     // Flight partner priority: trip.com (always enabled) → skyscanner fallback.
     // Trip.com URL takes (dest, startIso, endIso); dest is unused by trip
     // (it doesn't pre-fill airports) but the signature is uniform. We always
@@ -1600,8 +1640,8 @@ function renderStretches(plan){
         ${holsWithDates.length?`<div class="se-hols"><strong>Public holidays:</strong> ${holsWithDates.join(' · ')}</div>`:''}
         <div class="se-leave">Apply leave on: <strong>${lv||'—'}</strong></div>
         ${dest?`<div class="se-actions">
-          <a class="btn btn-affiliate btn-sm" data-affiliate="${hotelPartner==AFFILIATE.klook?'klook':hotelPartner==AFFILIATE.agoda?'agoda':'booking'}" data-stretch="${i}" href="${hotelUrl}" target="_blank" rel="noopener">${hotelPartner.label.replace('🏨 ','🏨 Find a stay on ')}</a>
-          <a class="btn btn-affiliate btn-sm" data-affiliate="${flightPartner==AFFILIATE.trip?'trip':'skyscanner'}" data-stretch="${i}" href="${flightUrl}" target="_blank" rel="noopener">${flightLabel}</a>
+          <a class="btn btn-affiliate btn-sm" data-affiliate="${afKey(hotelPartner)}" data-stretch="${i}" href="${hotelUrl}" target="_blank" rel="noopener">${hotelPartner.label.replace('🏨 ','🏨 Find a stay on ')}</a>
+          <a class="btn btn-affiliate btn-sm" data-affiliate="${afKey(flightPartner)}" data-stretch="${i}" href="${flightUrl}" target="_blank" rel="noopener">${flightLabel}</a>
         </div>`:''}
         <div class="se-actions">
           <button class="btn btn-secondary btn-sm" data-share-stretch="${i}">💬 Share plan</button>

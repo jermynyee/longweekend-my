@@ -37,6 +37,32 @@
 import { ensureSchema, sql, extractAttribution, hashIp } from './_db.js';
 import { handlePreflight, originAllowed } from './_util.js';
 
+// Per-IP rate limit (25 Aug 26, ox-alpha review). The /api/track-event endpoint
+// is unauthenticated and willing to accept any event from any origin (with
+// `originAllowed` permitting requests that omit Origin entirely — see util.js
+// origin-allow check). At viral-link scale a bot loop writes rows unboundedly.
+// This is an in-memory counter per Vercel instance; resets on cold start, which
+// is fine for an MVP protection layer. Limit: 120 events / IP / UTC hour —
+// 12× the live typical rate (808 PV/30d ≈ 0.4 PV/IP/hour), generous for
+// real users but capped for bots.
+const RATE_LIMIT_PER_HOUR = 120;
+function bucketHour(d = new Date()) {
+  return d.toISOString().slice(0, 13).replace(/[-:T]/g, '').slice(0, 10);
+}
+function checkRateLimit(ipHash) {
+  if (!ipHash) return { allowed: true, count: 0 };
+  const hour = bucketHour();
+  globalThis.__lw_track_rl ||= new Map();
+  const rl = globalThis.__lw_track_rl;
+  const key = `tr:${ipHash}:${hour}`;
+  const count = (rl.get(key) || 0) + 1;
+  rl.set(key, count);
+  if (rl.size > 2000) {
+    for (const k of rl.keys()) if (!k.endsWith(hour)) rl.delete(k);
+  }
+  return { allowed: count <= RATE_LIMIT_PER_HOUR, count };
+}
+
 const VALID_EVENTS = new Set([
   'pageview',
   'tip_jar_click',
@@ -111,6 +137,14 @@ export async function POST(request) {
     ''
   );
   const ipHash = await hashIp(ip);
+  // Rate limit BEFORE schema check or DB insert (cheapest reject path first)
+  const rl = checkRateLimit(ipHash);
+  if (!rl.allowed) {
+    return jsonResponse(
+      { ok: false, error: 'rate_limited', hint: 'try again next hour' },
+      429
+    );
+  }
   const ua = (request.headers.get('User-Agent') || '').slice(0, 200);
   const attr = extractAttribution(body);
 

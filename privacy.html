@@ -37,7 +37,7 @@
   <div class="container">
     <header>
       <h1>🔒 Privacy Policy</h1>
-      <p class="muted">Last updated: 18 July 2026</p>
+      <p class="muted">Last updated: 23 August 2026</p>
     </header>
 
     <p>Longweekend.my is a small, no-login tool. We collect the minimum data needed to operate and improve it. Holiday data is sourced from the Government of Malaysia's official gazette and verified annually.</p>
@@ -89,6 +89,19 @@
 
     <h2>Changes to this policy</h2>
     <p>If we make material changes (e.g. adding a new analytics provider or email service), we will update this page and, for significant changes, show a notice on the homepage for at least 30 days.</p>
+
+    <h2>Google API access (gog CLI)</h2>
+    <p>To operate the waitlist, send reminder emails, and manage affiliate tracking spreadsheets, the site operator uses the <code>gog</code> command-line tool with a personal Google account. This tool accesses the following Google APIs on the operator's own account only — not on any visitor's account:</p>
+    <ul>
+      <li><strong>Gmail</strong> — to send transactional waitlist confirmation emails and (in future) long-weekend reminder emails.</li>
+      <li><strong>Google Calendar</strong> — to create calendar events for major Malaysian public holidays so they can be linked from the year pages.</li>
+      <li><strong>Google Drive + Sheets</strong> — to read and write the affiliate-click tracking spreadsheet, the holiday gazette data, and the waitlist subscriber list. No visitor data is stored in these sheets beyond what is submitted through the main page form.</li>
+    </ul>
+    <p>Data accessed through the gog CLI is stored on the operator's local machine and in the same database / spreadsheets that power this site. It is never shared with any third party. The OAuth credentials used by gog are stored in the macOS Keychain and never leave the operator's machine.</p>
+    <p>The gog CLI does not access any visitor's Google account — it is used only to automate the operator's own workflow. Visitors are never asked to sign in with Google, and the site does not request Google account permissions from any visitor.</p>
+
+    <h2>Contact</h2>
+    <p>For privacy questions, data access requests, or to report a concern, use the contact method on the <a href="/">main page</a>. We respond to all privacy enquiries within 7 days.</p>
 
     <footer>
       <p><a href="/">← Back to the calculator</a> · <a href="/about.html">About</a></p>
