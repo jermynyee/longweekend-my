@@ -803,7 +803,10 @@ const AFFILIATE={
     // trip.com preserves city/checkin/checkout — to pre-fill the destination
     // AND the stretch window (same conversion trick as the flight CTA).
     url:(d,startIso,endIso)=>{
-      const city=String(d||'').replace(/,\s*Malaysia\s*$/i,'').trim();
+      // Skip the generic 'Malaysia' fallback (destForStretch's no-match value):
+      // city=Malaysia yields a useless country-level search.
+      const raw=String(d||'').replace(/,\s*Malaysia\s*$/i,'').trim();
+      const city=/^malaysia$/i.test(raw)?'':raw;
       let u=`https://www.trip.com/hotels?Allianceid=9065442&SID=322866832`
            + `&trip_sub1=hotel&trip_sub3=D20155256&linkhub_token=sl_N6Kyg5vCgW2`;
       if(city)u+=`&city=${encodeURIComponent(city)}`;
