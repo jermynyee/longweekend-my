@@ -120,6 +120,7 @@ export async function ensureSchema({ force = false } = {}) {
         states        TEXT[],
         asof          TEXT,
         feedback_len  INTEGER DEFAULT 0,
+        feedback      TEXT,
         utm_source    TEXT,
         utm_medium    TEXT,
         utm_campaign  TEXT,
@@ -137,6 +138,10 @@ export async function ensureSchema({ force = false } = {}) {
       // Unsubscribe support: track when a user opted out so future batch
       // sends (the planned reminder cron) skip them. Created as a separate
       // statement so it can be re-run on existing tables without erroring.
+      // Store the user's raw feedback text (added 9 Oct 26 — previously only
+      // feedback_len was kept, so messages were unrecoverable after the
+      // Discord/email notification). Separate statement so it re-runs safely.
+      await sql()`ALTER TABLE signups ADD COLUMN IF NOT EXISTS feedback TEXT`;
       await sql()`ALTER TABLE signups ADD COLUMN IF NOT EXISTS unsubscribed_at TIMESTAMPTZ`;
       await sql()`CREATE INDEX IF NOT EXISTS signups_unsubscribed_idx ON signups (unsubscribed_at) WHERE unsubscribed_at IS NULL`;
 

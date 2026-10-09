@@ -375,7 +375,7 @@ export async function POST(request) {
       if (sch.ok) {
         const attr = extractAttribution(body);
         await sql()`INSERT INTO signups (
-          email, year, al, states, asof, feedback_len,
+          email, year, al, states, asof, feedback_len, feedback,
           utm_source, utm_medium, utm_campaign, utm_term, utm_content,
           ref_host, user_agent, ip_hash
         ) VALUES (
@@ -385,6 +385,7 @@ export async function POST(request) {
           ${states},
           ${asof || null},
           ${feedback.length},
+          ${feedback ? feedback.slice(0, 1000) : null},
           ${attr.utm_source}, ${attr.utm_medium}, ${attr.utm_campaign},
           ${attr.utm_term}, ${attr.utm_content},
           ${attr.ref_host},

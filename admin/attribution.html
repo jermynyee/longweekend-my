@@ -172,7 +172,7 @@
 
   <div class="panel">
     <h2>🆕 Recent signups (last 20)</h2>
-    <table id="tbl-recent"><thead><tr><th>Email</th><th>Source</th><th>Year / AL</th><th>When</th></tr></thead><tbody></tbody></table>
+    <table id="tbl-recent"><thead><tr><th>Email</th><th>Source</th><th>Year / AL</th><th>When</th><th>Message</th></tr></thead><tbody></tbody></table>
   </div>
 
   <footer>longweekend.my · attribution dashboard · first-party data, no third-party trackers</footer>
@@ -201,9 +201,11 @@ async function load(){
   // The toggle state is persisted in localStorage across page reloads.
   const excludeMyIp = document.getElementById('exclude-my-ip').checked;
   try { localStorage.setItem('lw-exclude-my-ip', excludeMyIp ? '1' : '0'); } catch (e) {}
-  let url='/api/attribution?key='+encodeURIComponent(KEY)+'&days='+days+'&since='+encodeURIComponent(since);
+  let url='/api/attribution?days='+days+'&since='+encodeURIComponent(since);
   if (excludeMyIp) url += '&exclude_my_ip=1';
-  const r=await fetch(url);
+  const r=await fetch(url, {
+    headers: { 'x-admin-key': KEY }
+  });
   if(r.status===503){
     const j=await r.json().catch(()=>({}));
     if(j.error==='db_unconfigured'){
@@ -288,9 +290,12 @@ function fillTable(id,rows,cols){
 function fillRecent(rows){
   const tb=document.querySelector('#tbl-recent tbody');
   tb.innerHTML='';
-  if(!rows||!rows.length){tb.innerHTML='<tr><td colspan="4" style="color:var(--muted)">no signups yet — share the site to get some!</td></td></tr>';return}
+  if(!rows||!rows.length){tb.innerHTML='<tr><td colspan="5" style="color:var(--muted)">no signups yet — share the site to get some!</td></td></tr>';return}
   rows.forEach(r=>{
-    tb.innerHTML+=`<tr><td><code>${escapeHtml(r.email||'')}</code></td><td>${escapeHtml(r.source||'')}</td><td>${r.year||'?'} / ${r.al||'?'} AL</td><td style="color:var(--muted)">${escapeHtml(r.ts||'')}</td></tr>`;
+    const msg = r.feedback
+      ? `<span title="${escapeHtml(r.feedback)}">${escapeHtml(r.feedback)}</span>`
+      : (r.feedback_len ? `<span style="color:var(--muted)">(${r.feedback_len} chars — text not stored)</span>` : '—');
+    tb.innerHTML+=`<tr><td><code>${escapeHtml(r.email||'')}</code></td><td>${escapeHtml(r.source||'')}</td><td>${r.year||'?'} / ${r.al||'?'} AL</td><td style="color:var(--muted)">${escapeHtml(r.ts||'')}</td><td class="msg" style="max-width:420px">${msg}</td></tr>`;
   });
 }
 

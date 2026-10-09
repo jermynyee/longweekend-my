@@ -311,7 +311,8 @@ export async function GET(request) {
       // (consistent with the other 8 aggregations on this endpoint)
       sql()`
         SELECT email, to_char(created_at, 'YYYY-MM-DD HH24:MI:SS') AS ts,
-               COALESCE(utm_source, '(direct)') AS source, year, al
+               COALESCE(utm_source, '(direct)') AS source, year, al,
+               feedback, feedback_len
         FROM signups
         WHERE created_at >= ${sinceDays} AND email NOT LIKE '%@test.local'
         ORDER BY created_at DESC
@@ -543,6 +544,8 @@ export async function GET(request) {
         source: r.source,
         year: r.year,
         al: r.al,
+        feedback: r.feedback || null,
+        feedback_len: r.feedback_len || 0,
       })),
     });
   } catch (e) {

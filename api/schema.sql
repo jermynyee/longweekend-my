@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS signups (
   states        TEXT[],          -- { "Selangor", "Penang", ... } or empty
   asof          TEXT,            -- YYYY-MM-DD
   feedback_len  INTEGER DEFAULT 0,
+  feedback      TEXT,            -- the user's message to Jer (raw text, ≤1000 chars)
   utm_source    TEXT,
   utm_medium    TEXT,
   utm_campaign  TEXT,
